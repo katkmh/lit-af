@@ -7,4 +7,4 @@ app = Flask(__name__)
 def index():
     user = {'username': 'Katrina'}
     return render_template('test.html', title='Home', user=user)
-    # stream regular
+    # stream regular by nct
