@@ -6,6 +6,8 @@ http://rogerdudler.github.io/git-guide/
 py -3 -m venv lit
 lit\Scripts\activate
 pip install Flask
+pip install flask-bootstrap
+deactivate				-	to exit virtual env
 
 // setting up git
 git config --global user.name "username"
