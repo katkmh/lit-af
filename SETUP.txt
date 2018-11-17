@@ -1,0 +1,26 @@
+http://rogerdudler.github.io/git-guide/
+
+// create folder 'lit-af' tas go to folder in cmd
+
+// create virtual env and install flask
+py -3 -m venv lit
+lit\Scripts\activate
+pip install Flask
+
+// setting up git
+git config --global user.name "username"
+git config --global user.email "email"
+
+// setting local repo lit-af to remote repo
+git init
+git remote add origin https://github.com/katkmh/lit-af.git
+git push --set-upstream origin master
+
+// basic workflow
+git pull				- 	always pull before starting in case of changes
+git add filename		-	adding files with changes
+git commit -m "message"	-	commit changes to branch
+git push origin master	-	push changes upstream to remote repo
+
+// useful commands
+git status				-	check lang ng changes
