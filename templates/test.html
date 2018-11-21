@@ -1,12 +1,15 @@
 <!doctype html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
 
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Symbols -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Semantic UI -->
     <!-- <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
@@ -28,23 +31,31 @@
         font-size: 35px;
         font-weight: bold;
       }
+
       .navbar {
         font-family: 'Rubik';
         background-color: #322616;
         color: #efefaf;
         height: 60px;
-        padding: 0px 25px 0px 25px;
+        /*padding: 0px 250px 0px 250px;*/
       }
+
       .navbar a {
         color: #efefaf;
       }
+
+      .navbar a:hover {
+        color: #9cbbbb;
+      }
+
       .greeting  {
-        margin-right: 20px;
+        margin-right: 25px;
         font-size: 25px;
         color: #efefaf;
         font-weight: bold;
       }
 
+      /*Side Navigation*/
       .sidenav {
         height: 100%;
         width: 0;
@@ -74,36 +85,138 @@
       .sidenav .closebtn {
         position: absolute;
         top: 0;
-        right: 15px;
+        right: 20px;
         font-size: 36px;
         margin-left: 50px;
       }
 
+      /*Content*/
+      .content {
+        padding-top: 50px;
+      }
+
+      .brand {
+        font-size: 150px;
+        font-weight: bold;
+        text-align: center;
+        transition: 0.3s;
+      }
+
+      .subtitle {
+        font-size: 40px;
+        text-align: center;
+        margin-top: -60px;
+        transition: 0.3s;
+      }
+
+      .searchbar {
+        width: 400px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+      }
+
+      form.searchbar input[type=text] {
+        padding: 10px 10px 10px 20px;
+        font-size: 17px;
+        border: 1px solid #332717;
+        border-radius: 80px 0px 0px 80px;
+        float: left;
+        width: 80%;
+        background: #fafafa;
+        box-sizing: border-box;
+        /*display: inline-block;*/
+      }
+
+      form.searchbar button {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        background: #9DBCBC;
+        color: white;
+        font-size: 17px;
+        border: 1px solid #332717;
+        border-radius: 0px 80px 80px 0px;
+        border-left: none;
+        cursor: pointer;
+        transition: 0.3s;
+        display: inline-block;
+        position: relative;
+      }
+
+      form.searchbar button:hover {
+          background: #FF370F;
+      }
+
+      .panel {
+        margin: 60px auto 50px auto;
+        border-top: 1px solid #F0F0AF;
+        padding-top: 30px;
+        width: 95%;
+        max-width: 600px;
+      }
+
+      .title {
+        font-size: 30px;
+        font-weight: bold;
+        /*display: block;*/
+        line-height: 0.8;
+      }
+
+      .textchunk {
+        font-size: 16px;
+        margin-top: 10px;
+        text-align: justify;
+        /*display: block;*/
+      }
+
+      /*Responsive Styles*/
       @media screen and (max-height: 450px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
       }
+
+      @media screen and (max-width: 500px) {
+        .brand {font-size: 90px;}
+        .subtitle {font-size: 25px; margin-top: -35px;}
+        .searchbar {margin-top: 10px; width: 300px;}
+      }
+
     </style>
   </head>
   <body>
-      <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Profile</a>
-        <a href="#">Favorites</a>
-        <a href="#">Logout</a>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="#">Profile</a>
+      <a href="#">Favorites</a>
+      <a href="#">Logout</a>
+    </div>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark px-5">
+      <a class="navbar-brand" href="#">lit <font color="#fe3711">af</font></a>
+
+      <div class="ml-auto">
+      <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
+      <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
       </div>
-
-      <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">lit <font color="#fe3711">af</font></a>
-
-        <div class="ml-auto">
-        <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
-        <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
-        </div>
+    </nav>
     
-        
-      </nav>
-    <h1>content</h1>
+    <div class="content m-5">
+      <div class="brand">lit <font color="#fe3711">af</font></div>
+      <div class="subtitle">literature: a fanclub</div>
+      <form class="searchbar mx-auto" action="/action_page.php">
+        <input type="text" placeholder="Search..." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+      <div class="panel">
+        <div class="title">LITERATURE OF THE DAY:</div>
+        <div class="textchunk">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, tincidunt ac nisi ac, ultricies convallis risus. Mauris dapibus leo sit amet lectus consectetur, quis aliquet lorem posuere. Sed fringilla odio metus, volutpat vulputate elit fringilla viverra. Mauris fermentum sodales est, sed gravida sem egestas at. Suspendisse suscipit a lacus eu accumsan.</div>
+      </div>
+    <!-- <div class="content m-5">
+      <div class="title">LITERATURE OF THE DAY:</div>
+      <div class="textchunk">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, tincidunt ac nisi ac, ultricies convallis risus. Mauris dapibus leo sit amet lectus consectetur, quis aliquet lorem posuere. Sed fringilla odio metus, volutpat vulputate elit fringilla viverra. Mauris fermentum sodales est, sed gravida sem egestas at. Suspendisse suscipit a lacus eu accumsan.</div> -->
+    </div>
 
     <script>
       // Sidebar transition
