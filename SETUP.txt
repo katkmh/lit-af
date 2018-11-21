@@ -26,3 +26,6 @@ git push origin master	-	push changes upstream to remote repo
 
 // useful commands
 git status				-	check lang ng changes
+
+//installing sql alchemy inside virtualenv
+pip install flask sqlalchemy flask-sqlalchemy 
