@@ -9,6 +9,10 @@ pip install Flask
 pip install flask-bootstrap
 deactivate				-	to exit virtual env
 
+// running flask app
+set FLASK_APP=hello.py
+python -m flask run
+
 // setting up git
 git config --global user.name "username"
 git config --global user.email "email"
