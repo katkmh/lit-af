@@ -34,7 +34,8 @@
 
       .navbar {
         font-family: 'Rubik';
-        background-color: #322616;
+        /*background-color: #322616;*/
+        background-image: linear-gradient(to bottom right, #322616,#281e11);
         color: #efefaf;
         height: 60px;
         /*padding: 0px 250px 0px 250px;*/
@@ -63,7 +64,7 @@
         z-index: 1;
         top: 0;
         right: 0;
-        background-color: #322616;
+        background-color: #281e11;
         overflow-x: hidden;
         transition: 0.5s;
         padding-top: 60px;
@@ -79,7 +80,7 @@
       }
 
       .sidenav a:hover {
-        color: #9cbbbb;
+        color: #6BACBF;
       }
 
       .sidenav .closebtn {
@@ -172,12 +173,9 @@
       }
 
       /*Responsive Styles*/
-      @media screen and (max-height: 450px) {
+      @media screen and (max-width: 500px) {
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
-      }
-
-      @media screen and (max-width: 500px) {
         .brand {font-size: 90px;}
         .subtitle {font-size: 25px; margin-top: -35px;}
         .searchbar {margin-top: 10px; width: 300px;}
@@ -187,23 +185,22 @@
   </head>
   <body>
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <a href="#">Profile</a>
       <a href="#">Favorites</a>
       <a href="#">Logout</a>
     </div>
 
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark px-5">
-      <a class="navbar-brand" href="#">lit <font color="#fe3711">af</font></a>
+      <a class="navbar-brand" href="#">Lit <font color="#fe3711">AF</font></a>
 
       <div class="ml-auto">
       <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
-      <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
+      <span style="font-size:25px;cursor:pointer" onclick="toggleNav()">&#9776;</span>
       </div>
     </nav>
     
     <div class="content m-5">
-      <div class="brand">lit <font color="#fe3711">af</font></div>
+      <div class="brand">Lit <font color="#fe3711">AF</font></div>
       <div class="subtitle">literature: a fanclub</div>
       <form class="searchbar mx-auto" action="/action_page.php">
         <input type="text" placeholder="Search..." name="search">
@@ -220,11 +217,16 @@
 
     <script>
       // Sidebar transition
-      function openNav() {
-        document.getElementById("mySidenav").style.width = "250px";
-      }
-      function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
+      var ctr = 0;
+      function toggleNav() {
+        if (ctr%2 == 0) {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        else {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+        ctr+=1;
+        // document.getElementById("mySidenav").style.width = "250px";
       }
     </script>
 
