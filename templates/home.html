@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+
+  <!-- Google Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Symbols -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    body {
+      font-family: 'Rubik';
+      background-color: #fbfbfb;
+      color: #000;
+    }
+
+    /*Side Navigation*/
+    .sidenav {
+      position: fixed;
+      float: left;
+      height: 100vh;
+      width: 40%;
+      background-image: linear-gradient(to bottom right, #322616,#281e11);
+      color: #fbfbfb;
+      text-align: right;
+    }
+
+    .content {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .brand {
+      font-size: 100px;
+      font-weight: bold;
+      transition: 0.3s;
+      margin-right: 25px;
+    }
+
+    .toggle {
+      overflow: hidden;
+      width: 100%;
+      /*margin-top: -30px;*/
+      background-color: inherit;
+    }
+
+    .toggle button {
+      width: inherit;
+      background-color: inherit;
+      color: #efefaf;
+      cursor: pointer;
+      text-align: right;
+      border: none;
+      padding: 8px 45px;
+      transition: 0.3s;
+      font-size: 20px;
+    }
+
+    .toggle button:hover {
+      background-color: #251D13;
+      color: #6BACBF;
+    }
+
+    .toggle button.active {
+      background-color: #fbfbfb;
+      color: #251D13;
+      font-weight: bold;
+    }
+
+    /*Info toggle*/
+    .info {
+      position: static;
+      height: 100vh;
+      width: 60%;
+      padding: 30px;
+      float: right;
+      background-color: #fbfbfb;
+    }
+
+    .tabcontent h1 {
+      text-shadow: 2px 1px #9DBCBC;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .tabcontent p {
+      text-align: justify;
+      text-indent: 25px;
+      font-size: 16px;
+    }
+
+    /*Responsive Styles*/
+    @media screen and (max-width: 850px) {
+      /*.sidenav a {font-size: 18px;}*/
+      .brand {font-size: 60px;}
+      /*.searchbar {margin-top: 10px; width: 300px;}*/
+    }
+/*
+    @media screen and (max-width: 650px) {
+      .brand {font-size: 85px;}
+    }*/
+  </style>
+</head>
+<body>
+  <div class="sidenav">
+    <div class="content">
+      <div class="brand">Lit: <font color="#fe3711">AF</font></div>
+      <div class="toggle">
+        <button class="togglelinks" onclick="openInfo(event,'About')" id="defaultOpen">About</button>
+        <button class="togglelinks" onclick="openInfo(event,'Login')">Login</button>
+        <button class="togglelinks" onclick="openInfo(event,'Signup')">Signup</button>
+      </div>
+    </div>
+  </div>
+  <div class="info">
+    <div class="content">
+      <div id="About" class="tabcontent">
+        <h1>ABOUT</h1>
+        <p><b>Lit: <font color="#fe3711">AF</font></b>, or <i><b>lit</b>erature: <b>a f</b>anclub</i>, is a web application that serves as a literature database for enthusiasts and writers. These include poetries, dramas, proses, etc. You can browse through written pieces from famous to unknown writers or through its title, genre, creation date. These pieces can be rated and reviewed by the users.</p>
+        <p><b>Lit: <font color="#fe3711">AF</font></b> aims to cultivate the appreciation for all forms of literature in this generation.</p>
+      </div>
+      <div id="Login" class="tabcontent">
+        <h1>Welcome back!</h1>
+        <form>
+          <div class="form-group">
+            <label for="inputID">Identification key</label>
+            <input type="writerID" class="form-control" id="inputID" placeholder="Enter your writer ID">
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-info">LOGIN</button>
+        </form>
+      </div>
+      <div id="Signup" class="tabcontent">
+        <h1>Be part of the fanclub!</h1>
+        <form>
+          <div class="form-group">
+            <label for="inputID">Name</label>
+            <input type="writerID" class="form-control" id="inputID" placeholder="Enter your name">
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Enter password">
+            <small id="passwordHelpBlock" class="form-text text-muted">
+              Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+            </small>
+          </div>
+          <div class="form-group">
+            <label for="inputAbout">About</label>
+            <textarea class="form-control" id="inputAbout" rows="3" placeholder="Enter something about yourself"></textarea>
+          </div>
+          <button type="submit" class="btn btn-info">JOIN</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // Opens toggle information on right column
+    function openInfo(evt, infoID) {
+      var i, tabcontent, togglelinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+      }
+      togglelinks = document.getElementsByClassName("togglelinks");
+      for (i = 0; i < togglelinks.length; i++) {
+          togglelinks[i].className = togglelinks[i].className.replace(" active", "");
+      }
+      document.getElementById(infoID).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+  </script>
+</body>
+</html>
