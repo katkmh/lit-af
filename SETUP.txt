@@ -33,3 +33,13 @@ git status				-	check lang ng changes
 
 //installing sql alchemy inside virtualenv
 pip install flask sqlalchemy flask-sqlalchemy 
+
+//postgres if mainstall mo na run yung shell search lang "psql"
+server: localhost
+database: postgres
+port: 5432
+username: postgres
+password: password
+
+//after ng python -m flask run initialize database
+python init.py 
