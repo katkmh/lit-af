@@ -83,7 +83,8 @@
         color: #6BACBF;
       }
 
-      .sidenav a:active {
+      .sidenav .currpage {
+        color: #fe3711;
         font-weight: bold;
       }
 
@@ -103,7 +104,7 @@
         z-index: 1;
         top: 20px;
         left: 10px;
-        background: #efefaf;
+        background: #f7f7d4;
         overflow-x: hidden;
         padding-top: 100px;
         color: #322616;
@@ -114,7 +115,7 @@
       }
 
       .user .name {
-        font-size: 30px;
+        font-size: 26px;
         font-weight: bold;
         line-height: 0.8;
         margin-left: 20px;
@@ -129,7 +130,7 @@
       }
 
       .user .about {
-        font-size: 12px;
+        font-size: 14px;
         height: 24px;
         max-height: 250px;
         overflow-y: auto;
@@ -140,9 +141,9 @@
 
       .user button {
         width: inherit;
-        font-size: 14px;
+        font-size: 16px;
         color: #322616;
-        background-color: #efefaf;
+        background-color: #f7f7d4;
         cursor: pointer;
         text-align: right;
         border: none;
@@ -190,13 +191,13 @@
   </head>
   <body>
     <div id="mySidenav" class="sidenav">
-      <a href="/view_profile">Profile</a>
-      <a href="#">Favorites</a>
-      <a href="#">Logout</a>
+      <a href="/view_profile" class="currpage">Profile</a>
+      <a href="/view_all_pieces">Pieces</a>
+      <a href="/logout">Logout</a>
     </div>
 
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark px-5">
-      <a class="navbar-brand" href="#">Lit: <font color="#fe3711">AF</font></a>
+      <a class="navbar-brand" href="/">Lit: <font color="#fe3711">AF</font></a>
 
       <div class="ml-auto">
       <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
@@ -211,6 +212,7 @@
       <div class="about">{{ user.about }}</div>
       <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
       <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
+      <button class="toggleInfo" onclick="window.location.href='/update_user'">Edit Account</a>
     </div>
 
     <div id="owned" class="pieces">
@@ -221,9 +223,11 @@
           {% set counter = counter+1 %}
           <div class="piece">
             <div class="ptitle">{{ counter }}) {{ i.title }}</div>
+            <div class="pwriter">genre: {{ i.genre }}</div>
           </div>
         {% endif %}
       {% endfor %}
+      <a class="btn btn-info" href="/add_piece" role="button">Create a piece</a>
     </div>
 
     <div id="faves" class="pieces">

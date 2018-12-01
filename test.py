@@ -86,15 +86,15 @@ def updateUser():
 	newPassword = request.form['password']
 	newAbout = request.form['about']
 
-	if(newName = ""):
+	if(newName == ""):
 		result.name = result.name
 	else:
 		result.name = newName
-	if(newPassword = ""):
+	if(newPassword == ""):
 		result.password = result.password
 	else:
 		result.password = newPassword
-	if(newAbout = ""):
+	if(newAbout == ""):
 		result.about = result.about
 	else:
 		result.about = newAbout
