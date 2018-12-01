@@ -207,7 +207,7 @@
     <div class="user">
       <div class="secTitle">My Profile</div>
       <div class="name">{{ user.username }}</div>
-      <div class="writerID">{{ user.writerID }}</div>
+      <div class="writerID">#{{ user.writerID }}</div>
       <div class="about">{{ user.about }}</div>
       <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
       <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
@@ -216,33 +216,26 @@
     <div id="owned" class="pieces">
       <div class="secTitle">My Pieces</div>
       {% set counter = 0 %}
-      {% for i in piece %}
-        {% if i.writerID == user.writerID}
+      {% for i in pieces %}
+        {% if i.writerID == user.writerID %}
           {% set counter = counter+1 %}
           <div class="piece">
-            <div class="ptitle">{{count}}) {{ i.title }}</div>
+            <div class="ptitle">{{ counter }}) {{ i.title }}</div>
           </div>
         {% endif %}
       {% endfor %}
-      {% if counter == 0 %}
-        <div class = "piece">
-          <div class="pwriter">Nothing to be displayed. Create something!</div>
-        </div>
-      {% endif %}
     </div>
 
     <div id="faves" class="pieces">
       <div class="secTitle">Favorite Pieces</div>
       <!-- insert if statement here if walang pieces yung user, display msg -->
       <!-- start for loop in enumerating pieces -->
+      {% for i in piece %}
       <div class="piece">
-        <div class="ptitle">{{ piece1.title }}</div>
-        <div class="pwriter">by {{ piece.writer }}</div>
+        <div class="ptitle">{{ i.title }}</div>
+        <div class="pwriter">by {{ i.writerID }}</div>
       </div>
-      <div class="piece">
-        <div class="ptitle">{{ piece1.title }}</div>
-        <div class="pwriter">by {{ piece.writer }}</div>
-      </div>
+      {% endfor %}
     </div>
 
     <script>
