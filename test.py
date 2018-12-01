@@ -118,14 +118,22 @@ def updateUserAbout():
 def viewProfile():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	user = {'username': result.name, 'about' : result.about}
-
-	return render_template('try.html', user=user)
+	pieces = db.session.query(Piece).all()
+	return render_template('test.html', user=user, pieces=pieces)
 
 @app.route('/view_all_pieces', methods=['POST'])
 def viewAllPieces():
 	pieces = db.session.query(Piece).all()
-	return render_template('try.html', pieces=pieces)
+	reviews = db.session.query(Reviews).all()
+	ratings = db.session.query(Rating).all()
+	return render_template('try.html', pieces=pieces, reviews=reviews, ratings=ratings)
 
+# @app.route('/update_piece_title', methods=['POST'])
+# def updatePieceTitle():
+# 	result = db.session.query(Writer).filter_by(name=session['username']).first()
+# 	#tapos query based sa writerID sa list ng pieces 
+# 	#then kunin yung title nung piece
+# 	#tapos update na 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
