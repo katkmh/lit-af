@@ -1,4 +1,5 @@
 from test import db,Piece,Writer,List,Rating,Reviews
+db.drop_all()
 db.create_all()
 
 user = Writer(name="Trina Aguilana", about="lalalala", password="ayokona")
