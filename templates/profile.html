@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Symbols -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Semantic UI -->
+    <!-- <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="semantic/dist/semantic.min.js"></script> -->
+
+    <style>
+      body {
+        font-family: 'Rubik';
+        background-color: #fbfbfb;
+      }
+
+      /*Navigation Bar*/
+      .navbar-brand {
+        font-family: 'Rubik';
+        font-size: 35px;
+        font-weight: bold;
+      }
+
+      .navbar {
+        font-family: 'Rubik';
+        /*background-color: #322616;*/
+        background-image: linear-gradient(to bottom right, #322616,#281e11);
+        color: #efefaf;
+        height: 60px;
+        /*padding: 0px 250px 0px 250px;*/
+      }
+
+      .navbar a {
+        color: #efefaf;
+      }
+
+      .navbar a:hover {
+        color: #9cbbbb;
+      }
+
+      .greeting  {
+        margin-right: 25px;
+        font-size: 25px;
+        color: #efefaf;
+        font-weight: bold;
+      }
+
+      /*Side Navigation*/
+      .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #281e11;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
+
+      .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #efefaf;
+        display: block;
+        transition: 0.3s;
+      }
+
+      .sidenav a:hover {
+        color: #6BACBF;
+      }
+
+      .sidenav a:active {
+        font-weight: bold;
+      }
+
+      /*Content*/
+      .secTitle {
+        font-size: 40px;
+        font-weight: bold;
+        text-shadow: 2px 1px #9DBCBC;
+        margin-bottom: 10px;
+        color: #000;
+      }
+
+      .user {
+        margin-left: 40px;
+        width: 300px;
+        position: fixed;
+        z-index: 1;
+        top: 20px;
+        left: 10px;
+        background: #efefaf;
+        overflow-x: hidden;
+        padding-top: 100px;
+        color: #322616;
+      }
+
+      .user .secTitle {
+        margin-left: 20px;
+      }
+
+      .user .name {
+        font-size: 30px;
+        font-weight: bold;
+        line-height: 0.8;
+        margin-left: 20px;
+      }
+
+      .user .writerID {
+        font-size: 16px;
+        color: #555753;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        margin-left: 20px;
+      }
+
+      .user .about {
+        font-size: 12px;
+        height: 24px;
+        max-height: 250px;
+        overflow-y: auto;
+        line-height:0.8;
+        margin-bottom: 20px;
+        margin-left: 20px;
+      }
+
+      .user button {
+        width: inherit;
+        font-size: 14px;
+        color: #322616;
+        background-color: #efefaf;
+        cursor: pointer;
+        text-align: right;
+        border: none;
+        padding: 8px 45px;
+        transition: 0.3s;
+      }
+
+      .user button:hover {
+        background-color: #DEDE9D;
+      }
+
+      .user button.active {
+        background-color: #322616;
+        color: #efefaf;
+        font-weight: bold;
+      }
+
+      .pieces {
+        margin: 120px 40px 40px 390px;
+      }
+
+      .pieces .piece {
+        margin: 15px 0px 25px 20px;
+      }
+
+      .piece .ptitle {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 0.8;
+      }
+
+      .piece .pwriter {
+        font-size: 16px;
+        color: #555753;
+        margin-top: 5px;
+        margin-bottom: 15px;
+      }
+
+      /*Responsive Styles*/
+      @media screen and (max-width: 740px) {
+        /*.pieces {margin-top: 25px;}*/
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+      <a href="/profile">Profile</a>
+      <a href="#">Favorites</a>
+      <a href="#">Logout</a>
+    </div>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark px-5">
+      <a class="navbar-brand" href="#">Lit: <font color="#fe3711">AF</font></a>
+
+      <div class="ml-auto">
+      <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
+      <span style="font-size:25px;cursor:pointer" onclick="toggleNav()">&#9776;</span>
+      </div>
+    </nav>
+
+    <div class="user">
+      <div class="secTitle">My Profile</div>
+      <div class="name">{{ user.username }}</div>
+      <div class="writerID">{{ user.writerID }}</div>
+      <div class="about">{{ user.about }}</div>
+      <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
+      <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
+    </div>
+
+    <div id="owned" class="pieces">
+      <div class="secTitle">My Pieces</div>
+      {% set counter = 0 %}
+      {% for i in piece %}
+        {% if i.writerID == user.writerID}
+          {% set counter = counter+1 %}
+          <div class="piece">
+            <div class="ptitle">{{count}}) {{ i.title }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+      {% if counter == 0 %}
+        <div class = "piece">
+          <div class="pwriter">Nothing to be displayed. Create something!</div>
+        </div>
+      {% endif %}
+    </div>
+
+    <div id="faves" class="pieces">
+      <div class="secTitle">Favorite Pieces</div>
+      <!-- insert if statement here if walang pieces yung user, display msg -->
+      <!-- start for loop in enumerating pieces -->
+      <div class="piece">
+        <div class="ptitle">{{ piece1.title }}</div>
+        <div class="pwriter">by {{ piece.writer }}</div>
+      </div>
+      <div class="piece">
+        <div class="ptitle">{{ piece1.title }}</div>
+        <div class="pwriter">by {{ piece.writer }}</div>
+      </div>
+    </div>
+
+    <script>
+      // Sidebar transition
+      var ctr = 0;
+      function toggleNav() {
+        if (ctr%2 == 0) {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        else {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+        ctr+=1;
+      }
+
+      // Opens toggle information on right column
+      function openPieces(evt, infoID) {
+        var i, pieces, toggleInfo;
+        pieces = document.getElementsByClassName("pieces");
+        for (i = 0; i < pieces.length; i++) {
+            pieces[i].style.display = "none";
+        }
+        toggleInfo = document.getElementsByClassName("toggleInfo");
+        for (i = 0; i < toggleInfo.length; i++) {
+            toggleInfo[i].className = toggleInfo[i].className.replace(" active", "");
+        }
+        document.getElementById(infoID).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+    </script>
+
+    <!-- Javascript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
