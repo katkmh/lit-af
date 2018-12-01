@@ -60,7 +60,7 @@ class Reviews(db.Model):
 @app.route('/', methods=['GET','POST'])
 def start():
 	session['logged_in']= False
-	return render_template('home.html', pieces = pieces)
+	return render_template('home.html')
 
 #######kailangan muna niya dumaan dito bago sa update piece para makuha yung piece ID
 @app.route('/update', methods=['GET', 'POST'])
@@ -103,29 +103,40 @@ def addPiece():
 
 	return render_template('test.html', user=user)
 
+#kat try mo na padaanin muna dito yung pagnagclick ng edit ng account tapos saka na lang pupunta sa /update_user for the form
+@app.route('/dito_muna', methods=['GET', 'POST'])
+def ditomuna():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	pieces = db.session.query(Piece).all()
+	return render_template('update_user.html', user=user, pieces=pieces)
+
 @app.route('/update_user', methods=['GET', 'POST'])
 def updateUser():
-	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	newName = request.form['username']
-	newPassword = request.form['password']
-	newAbout = request.form['about']
-
-	if(newName == ""):
-		result.name = result.name
-	else:
-		result.name = newName
-	if(newPassword == ""):
-		result.password = result.password
-	else:
-		result.password = newPassword
-	if(newAbout == ""):
-		result.about = result.about
-	else:
-		result.about = newAbout
 	
+	newName = request.form.get('username')
+	newPassword = request.form.get('password')
+	newAbout = request.form.get('about')
+
+	# if(newName == ""):
+	# 	result.name = result.name
+	# else:
+	# 	result.name = newName
+	# if(newPassword == ""):
+	# 	result.password = result.password
+	# else:
+	# 	result.password = newPassword
+	# if(newAbout == ""):
+	# 	result.about = result.about
+	# else:
+	# 	result.about = newAbout
+
+	result.name = newName
+	result.password = newPassword
+	result.about = newAbout
+	
+	db.session.commit()
 	user = {'username': result.name, 'password' : result.password, 'about' : result.about}
 	pieces = db.session.query(Piece).all()
-	db.session.commit()
 	return render_template('update_user.html', user=user, pieces=pieces)
 
 @app.route('/view_profile')
