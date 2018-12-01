@@ -57,11 +57,35 @@ class Reviews(db.Model):
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 def start():
 	session['logged_in']= False
+	return render_template('home.html', pieces = pieces)
 
-	return render_template('home.html')
+#######kailangan muna niya dumaan dito bago sa update piece para makuha yung piece ID
+@app.route('/update', methods=['GET', 'POST'])
+def update():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	pieces = db.session.query(Piece).filter_by(writerID=result.writerID).all()
+	return render_template('try.html', pieces = pieces)
+
+@app.route('/updatePiece', methods=['GET','POST'])
+def updatePiece():
+
+	pieceID = request.form.get('pieceID')
+	newtitle = request.form.get('newtitle')
+	newgenre = request.form.get('newgenre')
+	newtext = request.form.get('newtext')
+
+	select = db.session.query(Piece).filter_by(pieceID=pieceID).first()
+
+	select.title = newtitle
+	select.genre = newgenre
+	select.text = newtext
+	db.session.commit()
+
+	pieces = db.session.query(Piece).all()
+	return render_template('try.html', pieces = pieces)
 
 @app.route('/add_piece', methods=['POST'])
 def addPiece():
@@ -71,7 +95,7 @@ def addPiece():
 	text = request.form['text']
 
 	writer_id = result.writerID
-
+	#insert same title by the same user restriction here
 	user = {'username': result.name}
 	piece = Piece(writerID=writer_id,title=title,genre=genre,text=text)
 	db.session.add(piece)
@@ -86,15 +110,15 @@ def updateUser():
 	newPassword = request.form['password']
 	newAbout = request.form['about']
 
-	if(newName = ""):
+	if(newName == ""):
 		result.name = result.name
 	else:
 		result.name = newName
-	if(newPassword = ""):
+	if(newPassword == ""):
 		result.password = result.password
 	else:
 		result.password = newPassword
-	if(newAbout = ""):
+	if(newAbout == ""):
 		result.about = result.about
 	else:
 		result.about = newAbout
@@ -119,53 +143,6 @@ def viewAllPieces():
 	reviews = db.session.query(Reviews).all()
 	ratings = db.session.query(Rating).all()
 	return render_template('try.html', pieces=pieces, reviews=reviews, ratings=ratings)
-
-###########HINDI PA SURE#################
-@app.route('/update_piece_title', methods=['POST'])
-def updatePieceTitle():
-	#feel ko kailangan??
-	pieces = db.session.query(Piece).all()
-	#so ito yung pagkuha ng value nung pieceID nung ieedit
-	pieceID = request.form.get("pieceID")
-
-	piece = db.session.query(Piece).filter_by(pieceID=pieceID).first()
-
-	newtitle = request.form.get("newtitle")
-	piece.title = newtitle
-	db.session.commit()
-
-	return render_template('try.html', pieces = pieces, piece=piece)
-
-@app.route('/update_piece_body', methods=['POST'])
-def updatePieceBody():
-	#feel ko kailangan??
-	pieces = db.session.query(Piece).all()
-	#so ito yung pagkuha ng value nung pieceID nung ieedit
-	pieceID = request.form.get("pieceID")
-
-	piece = db.session.query(Piece).filter_by(pieceID=pieceID).first()
-
-	newtext = request.form.get("newtext")
-	piece.text = newtext
-	db.session.commit()
-
-	return render_template('try.html', pieces = pieces, piece=piece)
-
-@app.route('/update_piece_genre', methods=['POST'])
-def updatePieceGenre():
-	#feel ko kailangan??
-	pieces = db.session.query(Piece).all()
-	#so ito yung pagkuha ng value nung pieceID nung ieedit
-	pieceID = request.form.get("pieceID")
-
-	piece = db.session.query(Piece).filter_by(pieceID=pieceID).first()
-
-	newgenre = request.form.get("newgenre")
-	piece.genre = newgenre
-	db.session.commit()
-
-	return render_template('try.html', pieces = pieces, piece=piece)
-###########HINDI PA SURE#################
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
