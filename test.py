@@ -60,24 +60,8 @@ class Reviews(db.Model):
 @app.route('/')
 def start():
 	session['logged_in']= False
-	# session['username'] = 'Trina Aguilana'
 
-	# result = db.session.query(Writer).filter_by(name=session['username']).first()
-	# pieces = db.session.query(Piece).filter_by(writerID=result.writerID).all()
-	# oldtitle = request.form.get("oldtitle")
-	# newtitle = request.form.get("newtitle")
-
-	# print(oldtitle)
-	# print(newtitle)
-	# # update_piece = db.session.query(pieces).filter_by(pieceID=oldID).first()
-	# # print(update_piece.title)
 	return render_template('home.html')
-
-	#tapos query based sa writerID sa list ng pieces 
-	#then kunin yung title nung piece
-	#tapos update na 
-	
-
 
 @app.route('/add_piece', methods=['POST'])
 def addPiece():
@@ -95,38 +79,28 @@ def addPiece():
 
 	return render_template('test.html', user=user)
 
-@app.route('/update_username', methods=['GET', 'POST'])
-def updateUserName():
+@app.route('/update_user', methods=['GET', 'POST'])
+def updateUser():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	newName = request.form['username']
-
-	result.name = newName
-
-	user = {'username': result.name}
-	db.session.commit()
-
-	return render_template('test.html', user=user)
-
-@app.route('/update_userpassword', methods=['GET', 'POST'])
-def updateUserPassword():
-	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	newPassword = request.form['password']
-
-	result.password = newPassword
-
-	user = {'username': result.name}
-	db.session.commit()
-
-	return render_template('test.html', user=user)
-
-@app.route('/update_userabout', methods=['GET', 'POST'])
-def updateUserAbout():
-	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	newAbout = request.form['about']
 
-	result.about = newAbout
-
-	user = {'username': result.name}
+	if(newName = ""):
+		result.name = result.name
+	else:
+		result.name = newName
+	if(newPassword = ""):
+		result.password = result.password
+	else:
+		result.password = newPassword
+	if(newAbout = ""):
+		result.about = result.about
+	else:
+		result.about = newAbout
+	
+	user = {'username': result.name, 'password' : result.password, 'about' : result.about}
+	
 	db.session.commit()
 
 	return render_template('test.html', user=user)
@@ -138,6 +112,7 @@ def viewProfile():
 	pieces = db.session.query(Piece).all()
 	return render_template('profile.html', user=user, pieces=pieces)
 
+
 @app.route('/view_all_pieces', methods=['POST'])
 def viewAllPieces():
 	pieces = db.session.query(Piece).all()
@@ -145,15 +120,53 @@ def viewAllPieces():
 	ratings = db.session.query(Rating).all()
 	return render_template('try.html', pieces=pieces, reviews=reviews, ratings=ratings)
 
-# @app.route('/update_piece_title', methods=['POST'])
-# def updatePieceTitle():
-# 	result = db.session.query(Writer).filter_by(name=session['username']).first()
-# 	#tapos query based sa writerID sa list ng pieces 
-# 	#then kunin yung title nung piece
-# 	#tapos update na 
-# 	user_pieces = db.session.query(Piece).filter_by(writerID=result.writerID).all()
+###########HINDI PA SURE#################
+@app.route('/update_piece_title', methods=['POST'])
+def updatePieceTitle():
+	#feel ko kailangan??
+	pieces = db.session.query(Piece).all()
+	#so ito yung pagkuha ng value nung pieceID nung ieedit
+	pieceID = request.form.get("pieceID")
 
-# 	return print(user_pieces)
+	piece = db.session.query(Piece).filter_by(pieceID=pieceID).first()
+
+	newtitle = request.form.get("newtitle")
+	piece.title = newtitle
+	db.session.commit()
+
+	return render_template('try.html', pieces = pieces, piece=piece)
+
+@app.route('/update_piece_body', methods=['POST'])
+def updatePieceBody():
+	#feel ko kailangan??
+	pieces = db.session.query(Piece).all()
+	#so ito yung pagkuha ng value nung pieceID nung ieedit
+	pieceID = request.form.get("pieceID")
+
+	piece = db.session.query(Piece).filter_by(pieceID=pieceID).first()
+
+	newtext = request.form.get("newtext")
+	piece.text = newtext
+	db.session.commit()
+
+	return render_template('try.html', pieces = pieces, piece=piece)
+
+@app.route('/update_piece_genre', methods=['POST'])
+def updatePieceGenre():
+	#feel ko kailangan??
+	pieces = db.session.query(Piece).all()
+	#so ito yung pagkuha ng value nung pieceID nung ieedit
+	pieceID = request.form.get("pieceID")
+
+	piece = db.session.query(Piece).filter_by(pieceID=pieceID).first()
+
+	newgenre = request.form.get("newgenre")
+	piece.genre = newgenre
+	db.session.commit()
+
+	return render_template('try.html', pieces = pieces, piece=piece)
+###########HINDI PA SURE#################
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
