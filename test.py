@@ -3,11 +3,12 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.mysql import LONGTEXT
-from flask import request, redirect, url_for
+from flask import request, redirect, url_for, session, abort
 import os
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+app.secret_key = 'my_secret_key'
 Bootstrap(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:password@localhost/postgres'
@@ -35,7 +36,6 @@ class Writer(db.Model):
 class List(db.Model):
 	listID = db.Column(db.Integer,unique=True,nullable=False,primary_key=True,autoincrement=True)
 	writerID = db.Column(db.Integer, db.ForeignKey('writer.writerID'),primary_key=True)
-	pieceID = db.Column(db.Integer, db.ForeignKey('piece.pieceID'))
 	
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -57,21 +57,24 @@ class Reviews(db.Model):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 		
 @app.route('/')
-# @app.route('/index')
-# def home():
-#    user = {'username': request.form['username']}
-#    return render_template('test.html', title='Home', user=user)
+def home():
+	session['logged_in']= False
+	if not session.get('logged_in'):
+		return render_template('try.html')
+	else:
+		return "test"
 
-@app.route('/index', methods=['GET', 'POST'])
-@cross_origin()
+@app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
-	if request.method == 'POST':
-		if request.form['username'] == ' ' or request.form['password'] == ' ':
-			error = 'Invalid'
-		else:
-			return redirect(url_for('Home'))
-	return render_template('try.html', title='Login', error=error) 
+	if request.form['username'] == ' ' or request.form['password'] == ' ':
+		error = 'Invalid'
+		return home()
+	else:
+		session['logged_in'] = True
+		user = {'username': request.form['username']}
+		return render_template('test.html', user=user)
 
-if __name__ == '__test__':
+if __name__ == '__main__':
+	app.secret_key = os.urandom(12)
 	app.run()
