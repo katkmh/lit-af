@@ -212,7 +212,7 @@
       <div class="about">{{ user.about }}</div>
       <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
       <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
-      <button class="toggleInfo" onclick="window.location.href='/update_user'">Edit Account</a>
+      <button class="toggleInfo" onclick="window.location.href='/dito_muna'">Edit Account</a>
     </div>
 
     <div id="owned" class="pieces">
@@ -234,7 +234,7 @@
       <div class="secTitle">Favorite Pieces</div>
       <!-- insert if statement here if walang pieces yung user, display msg -->
       <!-- start for loop in enumerating pieces -->
-      {% for i in piece %}
+      {% for i in pieces %}
       <div class="piece">
         <div class="ptitle">{{ i.title }}</div>
         <div class="pwriter">by {{ i.writerID }}</div>
