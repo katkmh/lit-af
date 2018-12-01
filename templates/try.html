@@ -1,11 +1,7 @@
-{% block body %}
-{% if session['logged_in'] %}
-<p>You're logged in already!</p>
-{% else %}
-<form action="/login" method="POST">
-  <input type="username" name="username" placeholder="Username">
-  <input type="password" name="password" placeholder="Password">
-  <input type="submit" value="Log in">
+
+<form action="/add_piece" method="POST">
+  <input type="title" name="title" placeholder="Enter title">
+  <input type="genre" name="genre" placeholder="Enter Genre">
+  <input type="text" name="text" placeholder="Enter Story">
+  <input type="submit" value="Submit Piece">
 </form>
-{% endif %}
-{% endblock %}
