@@ -137,6 +137,7 @@ def updateUser():
 	
 	db.session.commit()
 	user = {'username': result.name, 'password' : result.password, 'about' : result.about}
+	pieces = db.session.query(Piece).all()
 	return render_template('update_user.html', user=user, pieces=pieces)
 
 @app.route('/view_profile')
@@ -199,7 +200,8 @@ def signup():
 			db.session.commit()
 			session['logged_in'] = True
 			session['username'] = request.form['username']
-			return render_template('test.html', user=user)
+			pieces = db.session.query(Piece).all()
+			return render_template('test.html', user=user, pieces=pieces)
 
 @app.route('/logout')
 def logout():
