@@ -134,7 +134,7 @@ def updateUserAbout():
 @app.route('/view_profile')
 def viewProfile():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	user = {'username': result.name, 'about' : result.about}
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
 	pieces = db.session.query(Piece).all()
 	return render_template('profile.html', user=user, pieces=pieces)
 

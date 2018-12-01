@@ -83,94 +83,107 @@
         color: #6BACBF;
       }
 
-      /*Content*/
-      .content {
-        padding-top: 50px;
-      }
-
-      .brand {
-        font-size: 150px;
+      .sidenav a:active {
         font-weight: bold;
-        text-align: center;
-        transition: 0.3s;
       }
 
-      .subtitle {
+      /*Content*/
+      .secTitle {
         font-size: 40px;
-        text-align: center;
-        margin-top: -60px;
-        transition: 0.3s;
+        font-weight: bold;
+        text-shadow: 2px 1px #9DBCBC;
+        margin-bottom: 10px;
+        color: #000;
       }
 
-      .searchbar {
-        width: 400px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        overflow: hidden;
-        transition: 0.3s;
+      .user {
+        margin-left: 40px;
+        width: 300px;
+        position: fixed;
+        z-index: 1;
+        top: 20px;
+        left: 10px;
+        background: #efefaf;
+        overflow-x: hidden;
+        padding-top: 100px;
+        color: #322616;
       }
 
-      form.searchbar input[type=text] {
-        padding: 10px 10px 10px 20px;
-        font-size: 17px;
-        border: 1px solid #332717;
-        border-radius: 80px 0px 0px 80px;
-        float: left;
-        width: 80%;
-        background: #fafafa;
-        box-sizing: border-box;
-        /*display: inline-block;*/
+      .user .secTitle {
+        margin-left: 20px;
       }
 
-      form.searchbar button {
-        float: left;
-        width: 20%;
-        padding: 10px;
-        background: #9DBCBC;
-        color: white;
-        font-size: 17px;
-        border: 1px solid #332717;
-        border-radius: 0px 80px 80px 0px;
-        border-left: none;
-        cursor: pointer;
-        transition: 0.3s;
-        display: inline-block;
-        position: relative;
-      }
-
-      form.searchbar button:hover {
-        background: #FF370F;
-      }
-
-      .panel {
-        margin: 60px auto 50px auto;
-        border-top: 1px solid #F0F0AF;
-        padding-top: 30px;
-        width: 95%;
-        max-width: 600px;
-      }
-
-      .title {
+      .user .name {
         font-size: 30px;
         font-weight: bold;
-        /*display: block;*/
+        line-height: 0.8;
+        margin-left: 20px;
+      }
+
+      .user .writerID {
+        font-size: 16px;
+        color: #555753;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        margin-left: 20px;
+      }
+
+      .user .about {
+        font-size: 12px;
+        height: 24px;
+        max-height: 250px;
+        overflow-y: auto;
+        line-height:0.8;
+        margin-bottom: 20px;
+        margin-left: 20px;
+      }
+
+      .user button {
+        width: inherit;
+        font-size: 14px;
+        color: #322616;
+        background-color: #efefaf;
+        cursor: pointer;
+        text-align: right;
+        border: none;
+        padding: 8px 45px;
+        transition: 0.3s;
+      }
+
+      .user button:hover {
+        background-color: #DEDE9D;
+      }
+
+      .user button.active {
+        background-color: #322616;
+        color: #efefaf;
+        font-weight: bold;
+      }
+
+      .pieces {
+        margin: 120px 40px 40px 390px;
+      }
+
+      .pieces .piece {
+        margin: 15px 0px 25px 20px;
+      }
+
+      .piece .ptitle {
+        font-size: 24px;
+        font-weight: bold;
         line-height: 0.8;
       }
 
-      .textchunk {
+      .piece .pwriter {
         font-size: 16px;
-        margin-top: 10px;
-        text-align: justify;
-        /*display: block;*/
+        color: #555753;
+        margin-top: 5px;
+        margin-bottom: 15px;
       }
 
       /*Responsive Styles*/
-      @media screen and (max-width: 500px) {
-        .sidenav {padding-top: 15px;}
-        .sidenav a {font-size: 18px;}
-        .brand {font-size: 90px;}
-        .subtitle {font-size: 25px; margin-top: -35px;}
-        .searchbar {margin-top: 10px; width: 300px;}
+      @media screen and (max-width: 740px) {
+        /*.pieces {margin-top: 25px;}*/
       }
 
     </style>
@@ -190,21 +203,39 @@
       <span style="font-size:25px;cursor:pointer" onclick="toggleNav()">&#9776;</span>
       </div>
     </nav>
-    
-    <div class="content m-5">
-      <div class="brand">Lit: <font color="#fe3711">AF</font></div>
-      <div class="subtitle">literature: a fanclub</div>
-      <form class="searchbar mx-auto" action="/action_page.php">
-        <input type="text" placeholder="Search..." name="search">
-        <button type="submit"><i class="fa fa-search"></i></button>
-      </form>
-      <div class="panel">
-        <div class="title">LITERATURE OF THE DAY:</div>
-        <div class="textchunk">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, tincidunt ac nisi ac, ultricies convallis risus. Mauris dapibus leo sit amet lectus consectetur, quis aliquet lorem posuere. Sed fringilla odio metus, volutpat vulputate elit fringilla viverra. Mauris fermentum sodales est, sed gravida sem egestas at. Suspendisse suscipit a lacus eu accumsan.</div>
+
+    <div class="user">
+      <div class="secTitle">My Profile</div>
+      <div class="name">{{ user.username }}</div>
+      <div class="writerID">#{{ user.writerID }}</div>
+      <div class="about">{{ user.about }}</div>
+      <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
+      <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
+    </div>
+
+    <div id="owned" class="pieces">
+      <div class="secTitle">My Pieces</div>
+      {% set counter = 0 %}
+      {% for i in pieces %}
+        {% if i.writerID == user.writerID %}
+          {% set counter = counter+1 %}
+          <div class="piece">
+            <div class="ptitle">{{ counter }}) {{ i.title }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div id="faves" class="pieces">
+      <div class="secTitle">Favorite Pieces</div>
+      <!-- insert if statement here if walang pieces yung user, display msg -->
+      <!-- start for loop in enumerating pieces -->
+      {% for i in piece %}
+      <div class="piece">
+        <div class="ptitle">{{ i.title }}</div>
+        <div class="pwriter">by {{ i.writerID }}</div>
       </div>
-    <!-- <div class="content m-5">
-      <div class="title">LITERATURE OF THE DAY:</div>
-      <div class="textchunk">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, tincidunt ac nisi ac, ultricies convallis risus. Mauris dapibus leo sit amet lectus consectetur, quis aliquet lorem posuere. Sed fringilla odio metus, volutpat vulputate elit fringilla viverra. Mauris fermentum sodales est, sed gravida sem egestas at. Suspendisse suscipit a lacus eu accumsan.</div> -->
+      {% endfor %}
     </div>
 
     <script>
@@ -218,8 +249,25 @@
           document.getElementById("mySidenav").style.width = "0";
         }
         ctr+=1;
-        // document.getElementById("mySidenav").style.width = "250px";
       }
+
+      // Opens toggle information on right column
+      function openPieces(evt, infoID) {
+        var i, pieces, toggleInfo;
+        pieces = document.getElementsByClassName("pieces");
+        for (i = 0; i < pieces.length; i++) {
+            pieces[i].style.display = "none";
+        }
+        toggleInfo = document.getElementsByClassName("toggleInfo");
+        for (i = 0; i < toggleInfo.length; i++) {
+            toggleInfo[i].className = toggleInfo[i].className.replace(" active", "");
+        }
+        document.getElementById(infoID).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
     </script>
 
     <!-- Javascript -->
