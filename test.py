@@ -60,7 +60,7 @@ class Reviews(db.Model):
 def home():
 	session['logged_in']= False
 	if not session.get('logged_in'):
-		return render_template('try.html')
+		return render_template('home.html')
 	else:
 		return "test"
 
@@ -73,8 +73,19 @@ def login():
 	else:
 		session['logged_in'] = True
 		user = {'username': request.form['username']}
+		# writer = Writer(name=request.form['username'], password=request.form['password'])
+		# db.session.add(writer)
+		# db.session.commit()
 		return render_template('test.html', user=user)
 
+# @app.route('/signup', methods=['GET', 'POST'])
+# def signup():
+# 	error = None
+# 	if request.form['username'] == ' ' or request.form['password'] == ' ':
+# 		error = 'Invalid'
+# 		return render_template('home.html')
+# 	else
+	
 if __name__ == '__main__':
 	app.secret_key = os.urandom(12)
 	app.run()
