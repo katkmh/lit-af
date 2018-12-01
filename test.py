@@ -33,8 +33,6 @@ class Writer(db.Model):
 
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-	# def get_id(self):
-	# 	return self.writerID
 
 class List(db.Model):
 	listID = db.Column(db.Integer,unique=True,nullable=False,primary_key=True,autoincrement=True)
@@ -59,7 +57,6 @@ class Reviews(db.Model):
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-
 @app.route('/')
 def start():
 	session['logged_in']= False
@@ -80,6 +77,54 @@ def addPiece():
 	db.session.commit()
 
 	return render_template('test.html', user=user)
+
+@app.route('/update_username', methods=['GET', 'POST'])
+def updateUserName():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	newName = request.form['username']
+
+	result.name = newName
+
+	user = {'username': result.name}
+	db.session.commit()
+
+	return render_template('test.html', user=user)
+
+@app.route('/update_userpassword', methods=['GET', 'POST'])
+def updateUserPassword():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	newPassword = request.form['password']
+
+	result.password = newPassword
+
+	user = {'username': result.name}
+	db.session.commit()
+
+	return render_template('test.html', user=user)
+
+@app.route('/update_userabout', methods=['GET', 'POST'])
+def updateUserAbout():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	newAbout = request.form['about']
+
+	result.about = newAbout
+
+	user = {'username': result.name}
+	db.session.commit()
+
+	return render_template('test.html', user=user)
+
+@app.route('/view_profile')
+def viewProfile():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about}
+
+	return render_template('try.html', user=user)
+
+@app.route('/view_all_pieces', methods=['POST'])
+def viewAllPieces():
+	pieces = db.session.query(Piece).all()
+	return render_template('try.html', pieces=pieces)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -129,7 +174,7 @@ def signup():
 def logout():
 	session['logged_in']= False
 	session.pop('username', None)
-	return home
+	return start()
 
 if __name__ == '__main__':
 	app.secret_key = os.urandom(12)
