@@ -73,19 +73,23 @@ def login():
 	else:
 		session['logged_in'] = True
 		user = {'username': request.form['username']}
-		# writer = Writer(name=request.form['username'], password=request.form['password'])
-		# db.session.add(writer)
-		# db.session.commit()
+		#######INSERT USER AUTHENTICATION HERE########
 		return render_template('test.html', user=user)
 
-# @app.route('/signup', methods=['GET', 'POST'])
-# def signup():
-# 	error = None
-# 	if request.form['username'] == ' ' or request.form['password'] == ' ':
-# 		error = 'Invalid'
-# 		return render_template('home.html')
-# 	else
-	
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+	error = None
+	if request.form['username'] == ' ' or request.form['password'] == ' ':
+		error = 'Invalid'
+		return render_template('home.html')
+	else:
+		user = {'username': request.form['username']}
+		writer = Writer(name=request.form['username'], about=request.form['about'], password=request.form['password'])
+		db.session.add(writer)
+		db.session.commit()
+		session['logged_in'] = True
+		return render_template('test.html', user=user)
+
 if __name__ == '__main__':
 	app.secret_key = os.urandom(12)
 	app.run()
