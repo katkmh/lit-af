@@ -1,7 +1,7 @@
-
-<form action="/add_piece" method="POST">
-  <input type="title" name="title" placeholder="Enter title">
-  <input type="genre" name="genre" placeholder="Enter Genre">
-  <input type="text" name="text" placeholder="Enter Story">
-  <input type="submit" value="Submit Piece">
-</form>
+<html>
+    <h1>Pieces</h1>
+    {% for piece in pieces %}
+      <p>{{piece.title}}</p>
+    {% endfor %}
+  </body>
+</html>
