@@ -60,7 +60,24 @@ class Reviews(db.Model):
 @app.route('/')
 def start():
 	session['logged_in']= False
+	# session['username'] = 'Trina Aguilana'
+
+	# result = db.session.query(Writer).filter_by(name=session['username']).first()
+	# pieces = db.session.query(Piece).filter_by(writerID=result.writerID).all()
+	# oldtitle = request.form.get("oldtitle")
+	# newtitle = request.form.get("newtitle")
+
+	# print(oldtitle)
+	# print(newtitle)
+	# # update_piece = db.session.query(pieces).filter_by(pieceID=oldID).first()
+	# # print(update_piece.title)
 	return render_template('home.html')
+
+	#tapos query based sa writerID sa list ng pieces 
+	#then kunin yung title nung piece
+	#tapos update na 
+	
+
 
 @app.route('/add_piece', methods=['POST'])
 def addPiece():
@@ -119,7 +136,7 @@ def viewProfile():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	user = {'username': result.name, 'about' : result.about}
 	pieces = db.session.query(Piece).all()
-	return render_template('test.html', user=user, pieces=pieces)
+	return render_template('profile.html', user=user, pieces=pieces)
 
 @app.route('/view_all_pieces', methods=['POST'])
 def viewAllPieces():
@@ -134,6 +151,9 @@ def viewAllPieces():
 # 	#tapos query based sa writerID sa list ng pieces 
 # 	#then kunin yung title nung piece
 # 	#tapos update na 
+# 	user_pieces = db.session.query(Piece).filter_by(writerID=result.writerID).all()
+
+# 	return print(user_pieces)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
