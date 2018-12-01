@@ -107,6 +107,7 @@ def addPiece():
 @app.route('/dito_muna', methods=['GET', 'POST'])
 def ditomuna():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'password' : result.password, 'about' : result.about}
 	pieces = db.session.query(Piece).all()
 	return render_template('update_user.html', user=user, pieces=pieces)
 
@@ -197,6 +198,7 @@ def signup():
 			db.session.add(writer_list)
 			db.session.commit()
 			session['logged_in'] = True
+			session['username'] = request.form['username']
 			return render_template('test.html', user=user)
 
 @app.route('/logout')
