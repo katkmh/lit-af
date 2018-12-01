@@ -136,7 +136,6 @@ def updateUser():
 	
 	db.session.commit()
 	user = {'username': result.name, 'password' : result.password, 'about' : result.about}
-	pieces = db.session.query(Piece).all()
 	return render_template('update_user.html', user=user, pieces=pieces)
 
 @app.route('/view_profile')
