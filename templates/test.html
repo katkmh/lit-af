@@ -153,15 +153,31 @@
       .title {
         font-size: 30px;
         font-weight: bold;
-        /*display: block;*/
         line-height: 0.8;
       }
 
       .textchunk {
+        margin: 0px 15px;
+      }
+
+      .textchunk .ptitle {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 0.8;
+        margin-top: 30px;
+      }
+
+      .textchunk .psubtitle {
         font-size: 16px;
-        margin-top: 10px;
+        color: #555753;
+        margin-left: 30px;
+        margin-bottom: 5px;
+      }
+
+      .textchunk .ptext {
+        font-size: 16px;
+        margin-left: 10px;
         text-align: justify;
-        /*display: block;*/
       }
 
       /*Responsive Styles*/
@@ -200,11 +216,15 @@
       </form>
       <div class="panel">
         <div class="title">LITERATURE OF THE DAY:</div>
-        <div class="textchunk">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, tincidunt ac nisi ac, ultricies convallis risus. Mauris dapibus leo sit amet lectus consectetur, quis aliquet lorem posuere. Sed fringilla odio metus, volutpat vulputate elit fringilla viverra. Mauris fermentum sodales est, sed gravida sem egestas at. Suspendisse suscipit a lacus eu accumsan.</div>
+        <div class="textchunk">
+          {% set i = pieces|random %}
+          <div class="ptitle">"{{ i.title }}"</div>
+          {% for j in writers if j.writerID == i.writerID %}
+            <div class="psubtitle">{{ i.genre }} | by {{ j.name }}</div>
+          {% endfor %}
+          <div class="ptext">{{ i.text }}</div>
+        </div>
       </div>
-    <!-- <div class="content m-5">
-      <div class="title">LITERATURE OF THE DAY:</div>
-      <div class="textchunk">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nunc velit, tincidunt ac nisi ac, ultricies convallis risus. Mauris dapibus leo sit amet lectus consectetur, quis aliquet lorem posuere. Sed fringilla odio metus, volutpat vulputate elit fringilla viverra. Mauris fermentum sodales est, sed gravida sem egestas at. Suspendisse suscipit a lacus eu accumsan.</div> -->
     </div>
 
     <script>

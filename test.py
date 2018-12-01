@@ -124,10 +124,9 @@ def updateUser():
 		result.about = newAbout
 	
 	user = {'username': result.name, 'password' : result.password, 'about' : result.about}
-	
+	pieces = db.session.query(Piece).all()
 	db.session.commit()
-
-	return render_template('test.html', user=user)
+	return render_template('update_user.html', user=user, pieces=pieces)
 
 @app.route('/view_profile')
 def viewProfile():
@@ -160,7 +159,9 @@ def login():
 		if result:
 			session['logged_in'] = True
 			session['username'] = POST_USERNAME
-			return render_template('test.html', user=user)
+			writers = db.session.query(Writer).all()
+			pieces = db.session.query(Piece).all()
+			return render_template('test.html', user=user, pieces=pieces, writers=writers)
 		else:
 			return start()
 
