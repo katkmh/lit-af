@@ -182,7 +182,9 @@ def login():
 		if result:
 			session['logged_in'] = True
 			session['username'] = POST_USERNAME
-			return render_template('test.html', user=user)
+			writers = db.session.query(Writer).all()
+			pieces = db.session.query(Piece).all()
+			return render_template('test.html', user=user, pieces=pieces, writers=writers)
 		else:
 			return start()
 
