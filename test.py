@@ -6,6 +6,7 @@ from sqlalchemy.dialects.mysql import LONGTEXT
 from flask import request, redirect, url_for, session, abort
 import os
 from flask_cors import CORS, cross_origin
+from sqlalchemy.orm import sessionmaker
 
 app = Flask(__name__)
 app.secret_key = 'my_secret_key'
@@ -57,6 +58,7 @@ class Reviews(db.Model):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 		
 @app.route('/')
+
 def home():
 	session['logged_in']= False
 	if not session.get('logged_in'):
@@ -71,10 +73,17 @@ def login():
 		error = 'Invalid'
 		return home()
 	else:
-		session['logged_in'] = True
 		user = {'username': request.form['username']}
-		#######INSERT USER AUTHENTICATION HERE########
-		return render_template('test.html', user=user)
+
+		POST_USERNAME = request.form['username']
+		POST_PASSWORD = request.form['password']
+
+		result = db.session.query(Writer).filter_by(name=POST_USERNAME, password=POST_PASSWORD).scalar()
+		if result:
+			session['logged_in'] = True
+			return render_template('test.html', user=user)
+		else:
+			return home()
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -84,11 +93,23 @@ def signup():
 		return render_template('home.html')
 	else:
 		user = {'username': request.form['username']}
-		writer = Writer(name=request.form['username'], about=request.form['about'], password=request.form['password'])
-		db.session.add(writer)
-		db.session.commit()
-		session['logged_in'] = True
-		return render_template('test.html', user=user)
+		POST_USERNAME = request.form['username']
+
+		result = db.session.query(Writer).filter_by(name=POST_USERNAME).scalar()
+
+		if result:
+			return render_template('home.html')
+		else:
+			writer = Writer(name=request.form['username'], about=request.form['about'], password=request.form['password'])
+			db.session.add(writer)
+			db.session.commit()
+			session['logged_in'] = True
+			return render_template('test.html', user=user)
+
+@app.route('/logout')
+def logout():
+	session['logged_in']= False
+	return home
 
 if __name__ == '__main__':
 	app.secret_key = os.urandom(12)
