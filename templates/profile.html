@@ -199,14 +199,14 @@
       <a class="navbar-brand" href="#">Lit: <font color="#fe3711">AF</font></a>
 
       <div class="ml-auto">
-      <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
+      <font class="greeting">Hi, <font color="#6babbe">{{ user.name }}</font>!</font>
       <span style="font-size:25px;cursor:pointer" onclick="toggleNav()">&#9776;</span>
       </div>
     </nav>
 
     <div class="user">
       <div class="secTitle">My Profile</div>
-      <div class="name">{{ user.username }}</div>
+      <div class="name">{{ user.name }}</div>
       <div class="writerID">{{ user.writerID }}</div>
       <div class="about">{{ user.about }}</div>
       <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
@@ -216,7 +216,7 @@
     <div id="owned" class="pieces">
       <div class="secTitle">My Pieces</div>
       {% set counter = 0 %}
-      {% for i in piece %}
+      {% for i in pieces %}
         {% if i.writerID == user.writerID}
           {% set counter = counter+1 %}
           <div class="piece">
