@@ -128,6 +128,28 @@ def addReview():
 	reviews = db.session.query(Reviews).all()
 	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
 ##########################################################################33
+@app.route('/delete-review_form', methods=['GET', 'POST'])
+def deleteReviewForm():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about':result.about, 'writerID' :result.writerID}
+	pieces = db.session.query(Piece).all()
+	reviews = db.session.query(Reviews).all()
+	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
+
+@app.route('/delete_review', methods=['GET', 'POST'])
+def deleteReview():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	pieceID = request.form.get('pieceID')
+
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	select = db.session.query(Reviews).filter_by(writerID=result.writerID,pieceID=pieceID).first()
+
+	db.session.delete(select)
+	db.session.commit()
+
+	pieces = db.session.query(Piece).all()
+	reviews = db.session.query(Reviews).all()
+	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
 
 ############################add rating##############################
 @app.route('/add-rating_form', methods=['GET', 'POST'])
