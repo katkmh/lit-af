@@ -16,11 +16,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:password@localhos
 db = SQLAlchemy(app)
 
 class Piece(db.Model):
-	pieceID = db.Column(db.Integer,unique=True,nullable=False,primary_key=True, autoincrement=True)
+	pieceID = db.Column(db.Integer,unique=True,nullable=False,primary_key=True, autoincrement=True,)
 	writerID = db.Column(db.Integer,db.ForeignKey('writer.writerID'),primary_key=True)
 	title = db.Column(db.String(100))
 	genre = db.Column(db.String(15))
 	text = db.Column(db.Text)
+
+	lists = db.relationship("List", cascade="all, delete-orphan")
+	rating = db.relationship("Rating", cascade="all, delete-orphan")
+	reviews = db.relationship("Reviews", cascade="all, delete-orphan")
 
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -49,6 +53,8 @@ class Rating(db.Model):
 
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+	# pieceID = db.relationship("pieceID", cascade="save-update, merge, delete, delete-orphan")
 		
 class Reviews(db.Model):
 	writerID = db.Column(db.Integer, db.ForeignKey('writer.writerID'), primary_key=True)
@@ -57,6 +63,8 @@ class Reviews(db.Model):
 
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+	# pieceID = db.relationship("pieceID", cascade="save-update, merge, delete, delete-orphan")
 
 @app.route('/', methods=['GET','POST'])
 def start():
@@ -92,12 +100,12 @@ def deletePieceForm():
 @app.route('/delete_piece', methods=['GET', 'POST'])
 def deletePiece():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	pieceID = request.form.get('pieceID')
+	pieceID = request.form.get('deletePID')
 
 	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
 	select = db.session.query(Piece).filter_by(pieceID=pieceID).first()
 
-	db.session.delete(piece)
+	db.session.delete(select)
 	db.session.commit()
 
 	pieces = db.session.query(Piece).all()
