@@ -79,6 +79,82 @@ def updatePieceForm():
 	pieces = db.session.query(Piece).all()
 	return render_template('update_piece.html', user=user, pieces = pieces)
 
+########gawin ko na lang muna the same as yung sa update na may dinadaanan
+@app.route('/delete-piece_form', methods=['GET', 'POST'])
+def deletePieceForm():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about':result.about, 'writerID' :result.writerID}
+	pieces = db.session.query(Piece).all()
+
+	return render_template('profile.html', user=user, pieces=pieces)
+
+@app.route('/delete_piece', methods=['GET', 'POST'])
+def deletePiece():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	pieceID = request.form.get('pieceID')
+
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	select = db.session.query(Piece).filter_by(pieceID=pieceID).first()
+
+	db.session.delete(piece)
+	db.session.commit()
+
+	pieces = db.session.query(Piece).all()
+	return render_template('profile.html', user=user, pieces=pieces)
+
+############################add reviews###############################################
+#so since kailangan ng pieceID kailangan nung update piece may hidden ulit siya sa form
+@app.route('/add-review_form', methods=['GET', 'POST'])
+def addReviewForm():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	pieces = db.session.query(Piece).all()
+	reviews = db.session.query(Reviews).all()
+	return render_template('add_review.html', user=user, pieces=pieces, reviews=reviews)
+
+@app.route('/add_review', methods=['POST'])
+def addReview():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	pieceID = request.form.get('pieceID')
+	text = request.form.get('text')
+	writer_id = result.writerID
+	#insert same title by the same user restriction here
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	review = Reviews(writerID = result.writerID, pieceID = pieceID, text =text)
+
+	db.session.add(review)
+	db.session.commit()
+	pieces = db.session.query(Piece).all()
+	reviews = db.session.query(Reviews).all()
+	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
+##########################################################################33
+
+############################add rating##############################
+@app.route('/add-rating_form', methods=['GET', 'POST'])
+def addRatingForm():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	pieces = db.session.query(Piece).all()
+	ratings = db.session.query(Rating).all()
+	return render_template('add_rating.html', user=user, pieces=pieces, ratings=ratings)
+
+@app.route('/add_rating', methods=['POST'])
+def addRating():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	pieceID = request.form.get('pieceID')
+	rating = request.form.get('rating')
+	writer_id = result.writerID
+	
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	rating = Rating(writerID = result.writerID, pieceID = pieceID, rate=rating)
+
+	db.session.add(rating)
+	db.session.commit()
+	pieces = db.session.query(Piece).all()
+	ratings = db.session.query(Rating).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=rating)
+############################
+
 @app.route('/update_piece', methods=['GET','POST'])
 def updatePiece():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
@@ -127,19 +203,6 @@ def updateUser():
 	newName = request.form.get('username')
 	newPassword = request.form.get('password')
 	newAbout = request.form.get('about')
-
-	# if(newName == ""):
-	# 	result.name = result.name
-	# else:
-	# 	result.name = newName
-	# if(newPassword == ""):
-	# 	result.password = result.password
-	# else:
-	# 	result.password = newPassword
-	# if(newAbout == ""):
-	# 	result.about = result.about
-	# else:
-	# 	result.about = newAbout
 
 	result.name = newName
 	result.password = newPassword
