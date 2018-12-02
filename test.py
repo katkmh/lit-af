@@ -62,21 +62,31 @@ def start():
 	session['logged_in']= False
 	return render_template('home.html')
 
-#######kailangan muna niya dumaan dito bago sa update piece para makuha yung piece ID
-@app.route('/update', methods=['GET', 'POST'])
-def update():
+#######kailangan muna niya dumaan dito bago sa add piece
+@app.route('/add-piece_form', methods=['GET', 'POST'])
+def addPieceForm():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	pieces = db.session.query(Piece).filter_by(writerID=result.writerID).all()
-	return render_template('try.html', pieces = pieces)
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	pieces = db.session.query(Piece).all()
+	return render_template('add_piece.html', user=user, pieces=pieces)
 
-@app.route('/updatePiece', methods=['GET','POST'])
+#######kailangan muna niya dumaan dito bago sa update piece para makuha yung piece ID
+@app.route('/update-piece_form', methods=['GET', 'POST'])
+def updatePieceForm():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	# pieces = db.session.query(Piece).filter_by(writerID=result.writerID).all()
+	pieces = db.session.query(Piece).all()
+	return render_template('update_piece.html', user=user, pieces = pieces)
+
+@app.route('/update_piece', methods=['GET','POST'])
 def updatePiece():
-
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	pieceID = request.form.get('pieceID')
-	newtitle = request.form.get('newtitle')
-	newgenre = request.form.get('newgenre')
-	newtext = request.form.get('newtext')
-
+	newtitle = request.form.get('title')
+	newgenre = request.form.get('genre')
+	newtext = request.form.get('text')
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
 	select = db.session.query(Piece).filter_by(pieceID=pieceID).first()
 
 	select.title = newtitle
@@ -85,7 +95,7 @@ def updatePiece():
 	db.session.commit()
 
 	pieces = db.session.query(Piece).all()
-	return render_template('try.html', pieces = pieces)
+	return render_template('profile.html', user=user, pieces=pieces)
 
 @app.route('/add_piece', methods=['POST'])
 def addPiece():
@@ -96,14 +106,14 @@ def addPiece():
 
 	writer_id = result.writerID
 	#insert same title by the same user restriction here
-	user = {'username': result.name}
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
 	piece = Piece(writerID=writer_id,title=title,genre=genre,text=text)
 	db.session.add(piece)
 	db.session.commit()
+	pieces = db.session.query(Piece).all()
+	return render_template('profile.html', user=user, pieces=pieces)
+	# return render_template('add_piece.html', user=user)
 
-	return render_template('test.html', user=user)
-
-#kat try mo na padaanin muna dito yung pagnagclick ng edit ng account tapos saka na lang pupunta sa /update_user for the form
 @app.route('/dito_muna', methods=['GET', 'POST'])
 def ditomuna():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
@@ -113,7 +123,7 @@ def ditomuna():
 
 @app.route('/update_user', methods=['GET', 'POST'])
 def updateUser():
-	
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	newName = request.form.get('username')
 	newPassword = request.form.get('password')
 	newAbout = request.form.get('about')
@@ -136,9 +146,9 @@ def updateUser():
 	result.about = newAbout
 	
 	db.session.commit()
-	user = {'username': result.name, 'password' : result.password, 'about' : result.about}
+	user = {'username': result.name, 'password' : result.password, 'about' : result.about, 'writerID': result.writerID}
 	pieces = db.session.query(Piece).all()
-	return render_template('update_user.html', user=user, pieces=pieces)
+	return render_template('profile.html', user=user, pieces=pieces)
 
 @app.route('/view_profile')
 def viewProfile():
