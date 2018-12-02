@@ -37,7 +37,8 @@ class Writer(db.Model):
 class List(db.Model):
 	listID = db.Column(db.Integer,unique=True,nullable=False,primary_key=True,autoincrement=True)
 	writerID = db.Column(db.Integer, db.ForeignKey('writer.writerID'),primary_key=True)
-	
+	pieceID = db.Column(db.Integer, db.ForeignKey('piece.pieceID'),primary_key=True)
+
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
@@ -175,6 +176,30 @@ def addRating():
 	pieces = db.session.query(Piece).all()
 	ratings = db.session.query(Rating).all()
 	return render_template('profile.html', user=user, pieces=pieces, ratings=rating)
+
+########################addtoList##############
+@app.route('/add-to-list_form', methods=['GET', 'POST'])
+def addToListForm():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	pieces = db.session.query(Piece).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, all_list=all_list, writers=writers)
+
+@app.route('/add_to-list', methods=['GET', 'POST'])
+def addToList():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	pieceID = request.form.get('pieceID')
+	select = db.session.query(Piece).filter_by(pieceID=pieceID).first()
+
+	piece = List(listID=result.writerID, writerID=result.writerID, pieceID=select.pieceID)
+
+	pieces = db.session.query(Piece).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, all_list=all_list, writers=writers)
 ############################
 
 @app.route('/update_piece', methods=['GET','POST'])
@@ -239,16 +264,18 @@ def updateUser():
 def viewProfile():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	writers = db.session.query(Writer).all()
 	pieces = db.session.query(Piece).all()
-	return render_template('profile.html', user=user, pieces=pieces)
-
+	all_list = db.session.query(List).all()
+	return render_template('profile.html', user=user, pieces=pieces, all_list=all_list, writers=writers)
 
 @app.route('/view_all_pieces', methods=['POST'])
 def viewAllPieces():
+	writers = db.session.query(Writer).all()
 	pieces = db.session.query(Piece).all()
 	reviews = db.session.query(Reviews).all()
 	ratings = db.session.query(Rating).all()
-	return render_template('try.html', pieces=pieces, reviews=reviews, ratings=ratings)
+	return render_template('try.html', pieces=pieces, reviews=reviews, ratings=ratings, writers=writers)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
