@@ -188,7 +188,7 @@
         margin-top: 5px;
       }
 
-      .piece button {
+      .piece button.delete {
         font-size: 10px;
         width: 14px;
         height: 14px;
@@ -202,7 +202,7 @@
         background-color: #fbfbfb;
       }
 
-      .piece button:hover {
+      .piece button.delete:hover {
         background-color: #fe3711;
       }
 
@@ -245,7 +245,29 @@
         {% if i.writerID == user.writerID %}
           <div class="piece">
             <div class="ptitle">{{ i.title }}</div>
-            <button type="button" class="delete">&times;</button>
+            <form action="/delete_piece" method="POST">
+              <button type="button" class="delete" data-toggle="modal" data-target="#modalDelete">&times;</button>
+              <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Confirm delete</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <input type="hidden" id="deletePID" name="deletePID" display="none" value="{{ i.pieceID }}">
+                      Are you sure you want to delete your piece, <i>"{{ i.title }}"</i>?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-danger">Delete Piece</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
             <div class="pwriter">genre: {{ i.genre }}</div>
             <!-- <a href="#" class="badge badge-danger">Delete</a> -->
           </div>
