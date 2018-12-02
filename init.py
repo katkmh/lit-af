@@ -20,11 +20,11 @@ db.session.add(piece)
 
 db.session.commit()
 
-user_list = List(writerID = 1)
+user_list = List(writerID = 1, pieceID = 3)
 db.session.add(user_list)
-user_list = List(writerID = 2)
+user_list = List(writerID = 2, pieceID = 2)
 db.session.add(user_list)
-user_list = List(writerID = 3)
+user_list = List(writerID = 3, pieceID = 1)
 db.session.add(user_list)
 
 db.session.commit() 
