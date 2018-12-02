@@ -175,11 +175,35 @@
         line-height: 0.8;
       }
 
+      #owned .ptitle {
+        float:left;
+      }
+
       .piece .pwriter {
         font-size: 16px;
         color: #555753;
+      }
+
+      #faves .pwriter {
         margin-top: 5px;
-        margin-bottom: 15px;
+      }
+
+      .piece button {
+        font-size: 10px;
+        width: 14px;
+        height: 14px;
+        padding: 0px;
+        margin-left: 5px;
+        line-height: 0.6;
+        font-weight: bold;
+        border-radius: 50%;
+        border: 1px solid #fe3711;
+        transition: 0.3s;
+        background-color: #fbfbfb;
+      }
+
+      .piece button:hover {
+        background-color: #fe3711;
       }
 
       /*Responsive Styles*/
@@ -217,17 +241,18 @@
 
     <div id="owned" class="pieces">
       <div class="secTitle">My Pieces</div>
-      {% set counter = 0 %}
       {% for i in pieces %}
         {% if i.writerID == user.writerID %}
-          {% set counter = counter+1 %}
           <div class="piece">
-            <div class="ptitle">{{ counter }}) {{ i.title }}</div>
+            <div class="ptitle">{{ i.title }}</div>
+            <button type="button" class="delete">&times;</button>
             <div class="pwriter">genre: {{ i.genre }}</div>
+            <!-- <a href="#" class="badge badge-danger">Delete</a> -->
           </div>
         {% endif %}
       {% endfor %}
-      <a class="btn btn-info" href="/add_piece" role="button">Create a piece</a>
+      <a class="btn btn-info" href="/add-piece_form" role="button">Create a piece</a>
+      <a class="btn btn-secondary" href="/update-piece_form" role="button">Update my pieces</a>
     </div>
 
     <div id="faves" class="pieces">
