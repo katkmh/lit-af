@@ -259,11 +259,21 @@
       <div class="secTitle">Favorite Pieces</div>
       <!-- insert if statement here if walang pieces yung user, display msg -->
       <!-- start for loop in enumerating pieces -->
-      {% for i in pieces %}
-      <div class="piece">
-        <div class="ptitle">{{ i.title }}</div>
-        <div class="pwriter">by {{ i.writerID }}</div>
-      </div>
+      {% for i in all_list %}
+        {% if i.writerID == user.writerID %}
+          {%for j in pieces %}
+            {% if i.pieceID == j.pieceID %}
+              <div class="piece">
+              <div class="ptitle">{{ j.title }}</div>
+                {% for k in writers %}
+                  {% if j.writerID == k.writerID %}
+                    <div class="pwriter">by {{ k.name }}</div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
       {% endfor %}
     </div>
 
