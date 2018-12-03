@@ -66,6 +66,19 @@ def start():
 	session['logged_in']= False
 	return render_template('home.html')
 
+@app.route('/home')
+def home():
+	session['logged_in']= True
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
+	pieces = db.session.query(Piece).all()
+	reviews = db.session.query(Reviews).all()
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('test.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
+
+
 #######kailangan muna niya dumaan dito bago sa add piece
 @app.route('/add-piece_form', methods=['GET', 'POST'])
 def addPieceForm():
@@ -123,7 +136,7 @@ def addReviewForm():
 @app.route('/add_review', methods=['POST'])
 def addReview():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	pieceID = request.form.get('pieceID')
+	pieceID = request.form.get('reviewPID')
 	text = request.form.get('text')
 	writer_id = result.writerID
 	#insert same title by the same user restriction here

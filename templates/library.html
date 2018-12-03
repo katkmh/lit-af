@@ -1,0 +1,383 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Symbols -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Semantic UI -->
+    <!-- <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="semantic/dist/semantic.min.js"></script> -->
+
+    <style>
+      body {
+        font-family: 'Rubik';
+        background-color: #fbfbfb;
+      }
+
+      /*Navigation Bar*/
+      .navbar-brand {
+        font-family: 'Rubik';
+        font-size: 35px;
+        font-weight: bold;
+      }
+
+      .navbar {
+        font-family: 'Rubik';
+        /*background-color: #322616;*/
+        background-image: linear-gradient(to bottom right, #322616,#281e11);
+        color: #efefaf;
+        height: 60px;
+        /*padding: 0px 250px 0px 250px;*/
+      }
+
+      .navbar a {
+        color: #efefaf;
+      }
+
+      .navbar a:hover {
+        color: #9cbbbb;
+      }
+
+      .greeting  {
+        margin-right: 25px;
+        font-size: 25px;
+        color: #efefaf;
+        font-weight: bold;
+      }
+
+      /*Side Navigation*/
+      .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #281e11;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+      }
+
+      .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #efefaf;
+        display: block;
+        transition: 0.3s;
+      }
+
+      .sidenav a:hover {
+        color: #6BACBF;
+      }
+
+      .sidenav .currpage {
+        color: #fe3711;
+        font-weight: bold;
+      }
+
+      /*Content*/
+      .secTitle {
+        font-size: 40px;
+        font-weight: bold;
+        text-shadow: 2px 1px #9DBCBC;
+        margin-bottom: 10px;
+        color: #000;
+      }
+
+      .searchpanel {
+        margin-left: 40px;
+        width: 300px;
+        position: fixed;
+        z-index: 1;
+        top: 20px;
+        left: 10px;
+        background: #f7f7d4;
+        overflow-x: hidden;
+        margin-top: 70px;
+        color: #322616;
+        padding-bottom: 20px;
+      }
+
+      .searchpanel .secTitle {
+        margin-left: 20px;
+      }
+
+      .searchpanel .name {
+        font-size: 26px;
+        font-weight: bold;
+        line-height: 0.8;
+        margin-left: 20px;
+      }
+
+      .searchpanel .writerID {
+        font-size: 16px;
+        color: #555753;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        margin-left: 20px;
+      }
+
+      .searchpanel .about {
+        font-size: 14px;
+        height: 24px;
+        max-height: 250px;
+        overflow-y: auto;
+        line-height:0.8;
+        margin-bottom: 20px;
+        margin-left: 20px;
+      }
+
+      .pieces {
+        margin: 90px 40px 40px 390px;
+      }
+
+      .pieces .piece {
+        margin: 15px 0px 25px 20px;
+      }
+
+      .pieces .secTitle {
+        margin-bottom: 20px;
+      }
+
+      .configlinks {
+        float: right;
+      }
+
+      .piece .ptitle {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 0.8;
+
+      }
+
+      a.ptitle {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 0.8;
+        text-decoration: none;
+        color: #000;
+      }
+
+      a.ptitle:hover {
+        color: #6BACBF;
+        font-style: italic;
+      }
+
+      .piece .pwriter {
+        font-size: 16px;
+        color: #555753;
+      }
+
+      .piece .previews {
+        font-size: 14px;
+      }
+
+      .piece p {
+        font-size: 16px;
+        margin-top: 5px;
+        margin-left: 10px;
+      }
+
+      /*Responsive Styles*/
+      @media screen and (max-width: 740px) {
+        /*.pieces {margin-top: 25px;}*/
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+      <a href="/view_profile">Profile</a>
+      <a href="/view_all_pieces" class="currpage">Library</a>
+      <a href="/logout">Logout</a>
+    </div>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark px-5">
+      <a class="navbar-brand" href="/">Lit: <font color="#fe3711">AF</font></a>
+
+      <div class="ml-auto">
+      <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
+      <span style="font-size:25px;cursor:pointer" onclick="toggleNav()">&#9776;</span>
+      </div>
+    </nav>
+
+    <div class="searchpanel">
+      <div class="secTitle">Search</div>
+      <div class="mx-4">
+        <button type="button" class="btn btn-info btn-block mb-3 toggleInfo" id="defaultOpen" onclick="openPieces(event,'q-all')">Show all</button>
+        <button type="button" class="btn btn-secondary btn-block mt-4" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Search pieces</button>
+        <div class="collapse mt-3" id="collapseExample">
+          <input type="text" name="query" id="query" class="form-control" placeholder="Search...">
+          <button type="button" class="btn btn-info btn-block mt-2 toggleInfo" onclick="openPieces(event,'q-title')">Search by title</button>
+          <button type="button" class="btn btn-info btn-block mt-2 toggleInfo" onclick="openPieces(event,'q-writer')">Search by writer</button>
+          <button type="button" class="btn btn-info btn-block mt-2 toggleInfo" onclick="openPieces(event,'q-genre')">Search by genre</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIST ALL PIECES -->
+    <div id="q-all" class="pieces">
+      <div class="secTitle">All Pieces</div>
+      {% for i in pieces %}
+      <div class="piece">
+        <a class="ptitle" data-toggle="collapse" href="#details-{{ i.pieceID }}" aria-expanded="false" aria-controls="details-{{ i.pieceID }}">{{ i.title }}</a>
+        {% for j in writers %}
+          {% if i.writerID == j.writerID %}
+            <div class="pwriter">by {{ j.name }} | genre: {{ i.genre }}</div>
+          {% endif %}
+        {% endfor %}
+        <!-- KULANG PA RATE LMAO -->
+        <div class="collapse" id="details-{{ i.pieceID }}">
+          <div class="card card-body">
+            {{ i. text }}
+            <div class="container">
+              <div class="row">
+                <div class="col-6"></div>
+                <div class="col-3">
+                  <form action="/add_to-list" method="POST">
+                    <input type="hidden" id="favePID" name="favePID" display="none" value="{{ i.pieceID }}">
+                    <button type="submit" class="btn btn-info btn-sm btn-block">Add to Favorites</button>
+                  </form>
+                </div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-secondary btn-sm btn-block" data-toggle="modal" data-target="#modalAddR{{ i.pieceID }}">Add a Review</button>
+                </div>
+              </div>
+            </div>
+            <form action="/add_review" method="POST">
+              <div class="modal fade" id="modalAddR{{ i.pieceID }}" tabindex="-1" role="dialog" aria-labelledby="urCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="urLongTitle">Add review for "{{ i.title }}"</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <input type="hidden" id="reviewPID" name="reviewPID" display="none" value="{{ i.pieceID }}">
+                      <div class="form-group">
+                        <label for="reviewText">Review:</label>
+                        <textarea class="form-control" id="reviewText" name="text" rows="4" placeholder="Enter review here..."></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-info btn-sm">Add Review</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="ptitle">Reviews</div>
+            <div class="previews ml-3 mt-2">
+            {% for k in reviews %}
+              {% if k.pieceID == i.pieceID %}
+                <div class="piecerev">"{{ k.text }}" 
+                {% for j in writers %}
+                  {% if k.writerID == j.writerID %}
+                  - {{ j.name }}
+                  {% endif %}
+                {% endfor %}
+                </div>
+              {% endif %}
+            {% endfor %}
+           </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- QUERY BY TITLE -->
+    <div id="q-title" class="pieces">
+      <div class="secTitle">Feature coming soon...</div>
+    </div>
+
+    <!-- QUERY BY WRITER -->
+    <div id="q-writer" class="pieces">
+      <div class="secTitle">Feature coming soon...</div>
+    </div>
+
+    <!-- QUERY BY GENRE -->
+    <div id="q-genre" class="pieces">
+      <div class="secTitle">Feature coming soon...</div>
+    </div>
+
+    
+
+    <script>
+      // Sidebar transition
+      var ctr = 0;
+      function toggleNav() {
+        if (ctr%2 == 0) {
+          document.getElementById("mySidenav").style.width = "250px";
+        }
+        else {
+          document.getElementById("mySidenav").style.width = "0";
+        }
+        ctr+=1;
+      }
+
+      // Opens toggle information on right column
+      function openPieces(evt, infoID) {
+        var i, pieces, toggleInfo;
+        pieces = document.getElementsByClassName("pieces");
+        for (i = 0; i < pieces.length; i++) {
+            pieces[i].style.display = "none";
+        }
+        toggleInfo = document.getElementsByClassName("toggleInfo");
+        for (i = 0; i < toggleInfo.length; i++) {
+            toggleInfo[i].className = toggleInfo[i].className.replace(" active", "");
+        }
+        document.getElementById(infoID).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      // function openPieces(evt, infoID) {
+      //   var i, pieces, works, toggleInfo;
+      //   var x = document.getElementById("query").value;
+      //   pieces = document.getElementsByClassName("pieces");
+      //   for (i = 0; i < pieces.length; i++) {
+      //       pieces[i].style.display = "none";
+      //   }
+      //   works = document.getElementsByClassName("piece");
+      //   for (i = 0; i < pieces.length; i++) {
+      //       pieces[i].style.display = "none";
+      //   }
+      //   queries = document.getElementsById("qt-"+x);
+      //   for (i = 0; i < queries.length; i++) {
+      //       queries[i].style.display = "block";
+      //   }
+      //   toggleInfo = document.getElementsByClassName("toggleInfo");
+      //   for (i = 0; i < toggleInfo.length; i++) {
+      //       toggleInfo[i].className = toggleInfo[i].className.replace(" active", "");
+      //   }
+      //   $
+      //   document.getElementById(infoID).style.display = "block";
+      //   evt.currentTarget.className += " active";
+      // }
+
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+    </script>
+
+    <!-- Javascript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
