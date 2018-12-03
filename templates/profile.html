@@ -169,6 +169,23 @@
         margin: 15px 0px 25px 20px;
       }
 
+      .pieces .secTitle {
+        margin-bottom: 20px;
+      }
+
+      #owned .configlinks {
+        float: right;
+        margin-top: 12px;
+      }
+
+      #reviews .configlinks {
+        float: right;
+      }
+
+      #reviews .piece {
+        margin: 0px;
+      }
+
       .piece .ptitle {
         font-size: 24px;
         font-weight: bold;
@@ -206,6 +223,12 @@
         background-color: #fe3711;
       }
 
+      .piece p {
+        font-size: 16px;
+        margin-top: 5px;
+        margin-left: 10px;
+      }
+
       /*Responsive Styles*/
       @media screen and (max-width: 740px) {
         /*.pieces {margin-top: 25px;}*/
@@ -216,7 +239,7 @@
   <body>
     <div id="mySidenav" class="sidenav">
       <a href="/view_profile" class="currpage">Profile</a>
-      <a href="/view_all_pieces">Pieces</a>
+      <a href="/view_all_pieces">Library</a>
       <a href="/logout">Logout</a>
     </div>
 
@@ -236,10 +259,15 @@
       <div class="about">{{ user.about }}</div>
       <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
       <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
+      <button class="toggleInfo" onclick="openPieces(event,'reviews')">My Reviews</button>
       <button class="toggleInfo" onclick="window.location.href='/dito_muna'">Edit Account</a>
     </div>
 
     <div id="owned" class="pieces">
+      <div class="configlinks">
+        <a class="btn btn-info btn-sm" href="/add-piece_form" role="button">Create a piece</a>
+        <a class="btn btn-secondary btn-sm" href="/update-piece_form" role="button">Update my pieces</a>
+      </div>
       <div class="secTitle">My Pieces</div>
       {% for i in pieces %}
         {% if i.writerID == user.writerID %}
@@ -261,8 +289,8 @@
                       Are you sure you want to delete your piece, <i>"{{ i.title }}"</i>?
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-danger">Delete Piece</button>
+                      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-danger btn-sm">Delete Piece</button>
                     </div>
                   </div>
                 </div>
@@ -273,8 +301,6 @@
           </div>
         {% endif %}
       {% endfor %}
-      <a class="btn btn-info" href="/add-piece_form" role="button">Create a piece</a>
-      <a class="btn btn-secondary" href="/update-piece_form" role="button">Update my pieces</a>
     </div>
 
     <div id="faves" class="pieces">
@@ -295,6 +321,59 @@
               </div>
             {% endif %}
           {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div id="reviews" class="pieces">
+      <div class="secTitle">Reviewed pieces</div>
+      <!-- insert if statement here if walang pieces yung user, display msg -->
+      <!-- start for loop in enumerating pieces -->
+      {% for i in reviews %}
+        {% if i.writerID == user.writerID %}
+          <div class="card">
+            <div class="card-body p-3">
+              {% for j in pieces %}
+              {% if i.pieceID == j.pieceID %}
+              <div class="configlinks">
+                <!-- DELETE REVIEW -->
+                <form action="/delete_review" method="POST">
+                  <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteR">Delete</button>
+                  <div class="modal fade" id="modalDeleteR" tabindex="-1" role="dialog" aria-labelledby="drCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="drLongTitle">Confirm delete</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <input type="hidden" id="deletePID" name="deletePID" display="none" value="{{ j.pieceID }}">
+                          Are you sure you want to delete your review for <i>"{{ j.title }}"</i>?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-danger btn-sm">Delete Review</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="piece">
+              <div class="ptitle">{{ j.title }}</div>
+                {% for k in writers %}
+                  {% if j.writerID == k.writerID %}
+                    <div class="pwriter">by {{ k.name }}</div>
+                  {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+                <p>{{ i.text }}<p>
+              </div>
+            </div>
+          </div>
         {% endif %}
       {% endfor %}
     </div>
