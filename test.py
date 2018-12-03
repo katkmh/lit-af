@@ -167,7 +167,7 @@ def updateReviewForm():
 @app.route('/update_review', methods=['GET', 'POST'])
 def updateReview():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	pieceID = request.form.get('pieceID')
+	pieceID = request.form.get('updatePID')
 	newtext = request.form.get('text')
 
 	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}

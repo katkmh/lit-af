@@ -336,9 +336,36 @@
               {% for j in pieces %}
               {% if i.pieceID == j.pieceID %}
               <div class="configlinks">
-                <!-- DELETE REVIEW -->
+                <!-- UPDATE -->
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalUpdateR">Update</button>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteR">Delete</button>
+                <form action="/update_review" method="POST">
+                  <div class="modal fade" id="modalUpdateR" tabindex="-1" role="dialog" aria-labelledby="urCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="urLongTitle">Update review for "{{ j.title }}"</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <input type="hidden" id="updatePID" name="updatePID" display="none" value="{{ j.pieceID }}">
+                          <div class="form-group">
+                            <label for="reviewText">Review:</label>
+                            <textarea class="form-control" id="reviewText" name="text" rows="4" placeholder="Enter review here...">{{ i.text }}</textarea>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-info btn-sm">Update Review</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <!-- DELETE -->
                 <form action="/delete_review" method="POST">
-                  <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteR">Delete</button>
                   <div class="modal fade" id="modalDeleteR" tabindex="-1" role="dialog" aria-labelledby="drCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
