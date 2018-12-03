@@ -53,8 +53,6 @@ class Rating(db.Model):
 
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-	# pieceID = db.relationship("pieceID", cascade="save-update, merge, delete, delete-orphan")
 		
 class Reviews(db.Model):
 	writerID = db.Column(db.Integer, db.ForeignKey('writer.writerID'), primary_key=True)
@@ -63,8 +61,6 @@ class Reviews(db.Model):
 
 	def as_dict(self):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-	# pieceID = db.relationship("pieceID", cascade="save-update, merge, delete, delete-orphan")
 
 @app.route('/', methods=['GET','POST'])
 def start():
@@ -89,13 +85,13 @@ def updatePieceForm():
 	return render_template('update_piece.html', user=user, pieces = pieces)
 
 ########gawin ko na lang muna the same as yung sa update na may dinadaanan
-@app.route('/delete-piece_form', methods=['GET', 'POST'])
-def deletePieceForm():
-	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	user = {'username': result.name, 'about':result.about, 'writerID' :result.writerID}
-	pieces = db.session.query(Piece).all()
+# @app.route('/delete-piece_form', methods=['GET', 'POST'])
+# def deletePieceForm():
+# 	result = db.session.query(Writer).filter_by(name=session['username']).first()
+# 	user = {'username': result.name, 'about':result.about, 'writerID' :result.writerID}
+# 	pieces = db.session.query(Piece).all()
 
-	return render_template('profile.html', user=user, pieces=pieces)
+# 	return render_template('profile.html', user=user, pieces=pieces)
 
 @app.route('/delete_piece', methods=['GET', 'POST'])
 def deletePiece():
@@ -137,18 +133,18 @@ def addReview():
 	reviews = db.session.query(Reviews).all()
 	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
 ##########################################################################33
-@app.route('/delete-review_form', methods=['GET', 'POST'])
-def deleteReviewForm():
-	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	user = {'username': result.name, 'about':result.about, 'writerID' :result.writerID}
-	pieces = db.session.query(Piece).all()
-	reviews = db.session.query(Reviews).all()
-	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
+# @app.route('/delete-review_form', methods=['GET', 'POST'])
+# def deleteReviewForm():
+# 	result = db.session.query(Writer).filter_by(name=session['username']).first()
+# 	user = {'username': result.name, 'about':result.about, 'writerID' :result.writerID}
+# 	pieces = db.session.query(Piece).all()
+# 	reviews = db.session.query(Reviews).all()
+# 	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
 
 @app.route('/delete_review', methods=['GET', 'POST'])
 def deleteReview():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
-	pieceID = request.form.get('pieceID')
+	pieceID = request.form.get('deletePID')
 
 	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
 	select = db.session.query(Reviews).filter_by(writerID=result.writerID,pieceID=pieceID).first()
@@ -298,7 +294,8 @@ def viewProfile():
 	writers = db.session.query(Writer).all()
 	pieces = db.session.query(Piece).all()
 	all_list = db.session.query(List).all()
-	return render_template('profile.html', user=user, pieces=pieces, all_list=all_list, writers=writers)
+	reviews = db.session.query(Reviews).all()
+	return render_template('profile.html', user=user, pieces=pieces, all_list=all_list, writers=writers, reviews=reviews)
 
 @app.route('/view_all_pieces', methods=['POST'])
 def viewAllPieces():
