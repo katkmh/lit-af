@@ -83,7 +83,8 @@
         color: #6BACBF;
       }
 
-      .sidenav a:active {
+      .sidenav .currpage {
+        color: #fe3711;
         font-weight: bold;
       }
 
@@ -103,9 +104,9 @@
         z-index: 1;
         top: 20px;
         left: 10px;
-        background: #efefaf;
+        background: #f7f7d4;
         overflow-x: hidden;
-        padding-top: 100px;
+        padding-top: 70px;
         color: #322616;
       }
 
@@ -114,7 +115,7 @@
       }
 
       .user .name {
-        font-size: 30px;
+        font-size: 26px;
         font-weight: bold;
         line-height: 0.8;
         margin-left: 20px;
@@ -129,7 +130,7 @@
       }
 
       .user .about {
-        font-size: 12px;
+        font-size: 14px;
         height: 24px;
         max-height: 250px;
         overflow-y: auto;
@@ -140,9 +141,9 @@
 
       .user button {
         width: inherit;
-        font-size: 14px;
+        font-size: 16px;
         color: #322616;
-        background-color: #efefaf;
+        background-color: #f7f7d4;
         cursor: pointer;
         text-align: right;
         border: none;
@@ -161,11 +162,28 @@
       }
 
       .pieces {
-        margin: 120px 40px 40px 390px;
+        margin: 90px 40px 40px 390px;
       }
 
       .pieces .piece {
         margin: 15px 0px 25px 20px;
+      }
+
+      .pieces .secTitle {
+        margin-bottom: 20px;
+      }
+
+      #owned .configlinks {
+        float: right;
+        margin-top: 12px;
+      }
+
+      #reviews .configlinks {
+        float: right;
+      }
+
+      #reviews .piece {
+        margin: 0px;
       }
 
       .piece .ptitle {
@@ -174,11 +192,41 @@
         line-height: 0.8;
       }
 
+      #owned .ptitle {
+        float:left;
+      }
+
       .piece .pwriter {
         font-size: 16px;
         color: #555753;
+      }
+
+      #faves .pwriter {
         margin-top: 5px;
-        margin-bottom: 15px;
+      }
+
+      .piece button.delete {
+        font-size: 10px;
+        width: 14px;
+        height: 14px;
+        padding: 0px;
+        margin-left: 5px;
+        line-height: 0.6;
+        font-weight: bold;
+        border-radius: 50%;
+        border: 1px solid #fe3711;
+        transition: 0.3s;
+        background-color: #fbfbfb;
+      }
+
+      .piece button.delete:hover {
+        background-color: #fe3711;
+      }
+
+      .piece p {
+        font-size: 16px;
+        margin-top: 5px;
+        margin-left: 10px;
       }
 
       /*Responsive Styles*/
@@ -190,13 +238,13 @@
   </head>
   <body>
     <div id="mySidenav" class="sidenav">
-      <a href="/view_profile">Profile</a>
-      <a href="#">Favorites</a>
-      <a href="#">Logout</a>
+      <a href="/view_profile" class="currpage">Profile</a>
+      <a href="/view_all_pieces">Library</a>
+      <a href="/logout">Logout</a>
     </div>
 
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark px-5">
-      <a class="navbar-brand" href="#">Lit: <font color="#fe3711">AF</font></a>
+      <a class="navbar-brand" href="/">Lit: <font color="#fe3711">AF</font></a>
 
       <div class="ml-auto">
       <font class="greeting">Hi, <font color="#6babbe">{{ user.name }}</font>!</font>
@@ -206,43 +254,167 @@
 
     <div class="user">
       <div class="secTitle">My Profile</div>
+<<<<<<< HEAD
       <div class="name">{{ user.name }}</div>
       <div class="writerID">{{ user.writerID }}</div>
+=======
+      <div class="name">{{ user.username }}</div>
+      <div class="writerID">#{{ user.writerID }}</div>
+>>>>>>> 579941487e41c8818b395ac81f79fbe3055168b4
       <div class="about">{{ user.about }}</div>
       <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
       <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
+      <button class="toggleInfo" onclick="openPieces(event,'reviews')">My Reviews</button>
+      <button class="toggleInfo" onclick="window.location.href='/dito_muna'">Edit Account</a>
     </div>
 
     <div id="owned" class="pieces">
+      <div class="configlinks">
+        <a class="btn btn-info btn-sm" href="/add-piece_form" role="button">Create a piece</a>
+        <a class="btn btn-secondary btn-sm" href="/update-piece_form" role="button">Update my pieces</a>
+      </div>
       <div class="secTitle">My Pieces</div>
+<<<<<<< HEAD
       {% set counter = 0 %}
       {% for i in pieces %}
         {% if i.writerID == user.writerID}
           {% set counter = counter+1 %}
+=======
+      {% for i in pieces %}
+        {% if i.writerID == user.writerID %}
+>>>>>>> 579941487e41c8818b395ac81f79fbe3055168b4
           <div class="piece">
-            <div class="ptitle">{{count}}) {{ i.title }}</div>
+            <div class="ptitle">{{ i.title }}</div>
+            <form action="/delete_piece" method="POST">
+              <button type="button" class="delete" data-toggle="modal" data-target="#modalDelete">&times;</button>
+              <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Confirm delete</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <input type="hidden" id="deletePID" name="deletePID" display="none" value="{{ i.pieceID }}">
+                      Are you sure you want to delete your piece, <i>"{{ i.title }}"</i>?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-danger btn-sm">Delete Piece</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="pwriter">genre: {{ i.genre }}</div>
+            <!-- <a href="#" class="badge badge-danger">Delete</a> -->
           </div>
         {% endif %}
       {% endfor %}
-      {% if counter == 0 %}
-        <div class = "piece">
-          <div class="pwriter">Nothing to be displayed. Create something!</div>
-        </div>
-      {% endif %}
     </div>
 
     <div id="faves" class="pieces">
       <div class="secTitle">Favorite Pieces</div>
       <!-- insert if statement here if walang pieces yung user, display msg -->
       <!-- start for loop in enumerating pieces -->
-      <div class="piece">
-        <div class="ptitle">{{ piece1.title }}</div>
-        <div class="pwriter">by {{ piece.writer }}</div>
-      </div>
-      <div class="piece">
-        <div class="ptitle">{{ piece1.title }}</div>
-        <div class="pwriter">by {{ piece.writer }}</div>
-      </div>
+      {% for i in all_list %}
+        {% if i.writerID == user.writerID %}
+          {%for j in pieces %}
+            {% if i.pieceID == j.pieceID %}
+              <div class="piece">
+              <div class="ptitle">{{ j.title }}</div>
+                {% for k in writers %}
+                  {% if j.writerID == k.writerID %}
+                    <div class="pwriter">by {{ k.name }}</div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div id="reviews" class="pieces">
+      <div class="secTitle">Reviewed pieces</div>
+      <!-- insert if statement here if walang pieces yung user, display msg -->
+      <!-- start for loop in enumerating pieces -->
+      {% for i in reviews %}
+        {% if i.writerID == user.writerID %}
+          <div class="card">
+            <div class="card-body p-3">
+              {% for j in pieces %}
+              {% if i.pieceID == j.pieceID %}
+              <div class="configlinks">
+                <!-- UPDATE -->
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalUpdateR">Update</button>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteR">Delete</button>
+                <form action="/update_review" method="POST">
+                  <div class="modal fade" id="modalUpdateR" tabindex="-1" role="dialog" aria-labelledby="urCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="urLongTitle">Update review for "{{ j.title }}"</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <input type="hidden" id="updatePID" name="updatePID" display="none" value="{{ j.pieceID }}">
+                          <div class="form-group">
+                            <label for="reviewText">Review:</label>
+                            <textarea class="form-control" id="reviewText" name="text" rows="4" placeholder="Enter review here...">{{ i.text }}</textarea>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-info btn-sm">Update Review</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <!-- DELETE -->
+                <form action="/delete_review" method="POST">
+                  <div class="modal fade" id="modalDeleteR" tabindex="-1" role="dialog" aria-labelledby="drCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="drLongTitle">Confirm delete</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <input type="hidden" id="deletePID" name="deletePID" display="none" value="{{ j.pieceID }}">
+                          Are you sure you want to delete your review for <i>"{{ j.title }}"</i>?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-danger btn-sm">Delete Review</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="piece">
+              <div class="ptitle">{{ j.title }}</div>
+                {% for k in writers %}
+                  {% if j.writerID == k.writerID %}
+                    <div class="pwriter">by {{ k.name }}</div>
+                  {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+                <p>{{ i.text }}<p>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
 
     <script>

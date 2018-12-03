@@ -1,7 +1,12 @@
-<html>
-    <h1>Pieces</h1>
-    {% for piece in pieces %}
-      <p>{{piece.title}}</p>
-    {% endfor %}
-  </body>
+<!-- <html>
+  {% for piece in pieces %}
+    <form method="POST" action="/updatePiece">
+      <input type="hidden" value="{{piece.pieceID}}" name="pieceID">
+      <input type="text" value="{{piece.title}}" name="newtitle">
+      <input type="text" value="{{piece.genre}}" name="newgenre">
+      <input type="text" value="{{piece.text}}" name="newtext">
+      <input type="submit" value="Update">
+    </form>
+  {% endfor %}
 </html>
+ -->
