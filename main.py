@@ -76,7 +76,7 @@ def home():
 	ratings = db.session.query(Rating).all()
 	all_list = db.session.query(List).all()
 	writers = db.session.query(Writer).all()
-	return render_template('test.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
+	return render_template('main.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
 
 
 #######kailangan muna niya dumaan dito bago sa add piece
@@ -370,7 +370,7 @@ def login():
 			session['username'] = POST_USERNAME
 			writers = db.session.query(Writer).all()
 			pieces = db.session.query(Piece).all()
-			return render_template('test.html', user=user, pieces=pieces, writers=writers)
+			return render_template('main.html', user=user, pieces=pieces, writers=writers)
 		else:
 			return start()
 
@@ -398,7 +398,7 @@ def signup():
 			session['logged_in'] = True
 			session['username'] = request.form['username']
 			pieces = db.session.query(Piece).all()
-			return render_template('test.html', user=user, pieces=pieces)
+			return render_template('main.html', user=user, pieces=pieces)
 
 @app.route('/logout')
 def logout():
