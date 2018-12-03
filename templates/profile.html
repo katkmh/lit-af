@@ -131,10 +131,10 @@
 
       .user .about {
         font-size: 14px;
-        height: 24px;
-        max-height: 250px;
-        overflow-y: auto;
-        line-height:0.8;
+        /*height: 24px;*/
+        /*max-height: 250px;*/
+        /*overflow-y: auto;*/
+        /*line-height:0.8;*/
         margin-bottom: 20px;
         margin-left: 20px;
       }
@@ -247,20 +247,15 @@
       <a class="navbar-brand" href="/">Lit: <font color="#fe3711">AF</font></a>
 
       <div class="ml-auto">
-      <font class="greeting">Hi, <font color="#6babbe">{{ user.name }}</font>!</font>
+      <font class="greeting">Hi, <font color="#6babbe">{{ user.username }}</font>!</font>
       <span style="font-size:25px;cursor:pointer" onclick="toggleNav()">&#9776;</span>
       </div>
     </nav>
 
     <div class="user">
       <div class="secTitle">My Profile</div>
-<<<<<<< HEAD
-      <div class="name">{{ user.name }}</div>
-      <div class="writerID">{{ user.writerID }}</div>
-=======
       <div class="name">{{ user.username }}</div>
       <div class="writerID">#{{ user.writerID }}</div>
->>>>>>> 579941487e41c8818b395ac81f79fbe3055168b4
       <div class="about">{{ user.about }}</div>
       <button class="toggleInfo" onclick="openPieces(event,'owned')" id="defaultOpen">My Pieces</button>
       <button class="toggleInfo" onclick="openPieces(event,'faves')">My Favorites</button>
@@ -274,20 +269,13 @@
         <a class="btn btn-secondary btn-sm" href="/update-piece_form" role="button">Update my pieces</a>
       </div>
       <div class="secTitle">My Pieces</div>
-<<<<<<< HEAD
-      {% set counter = 0 %}
-      {% for i in pieces %}
-        {% if i.writerID == user.writerID}
-          {% set counter = counter+1 %}
-=======
       {% for i in pieces %}
         {% if i.writerID == user.writerID %}
->>>>>>> 579941487e41c8818b395ac81f79fbe3055168b4
           <div class="piece">
             <div class="ptitle">{{ i.title }}</div>
             <form action="/delete_piece" method="POST">
-              <button type="button" class="delete" data-toggle="modal" data-target="#modalDelete">&times;</button>
-              <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <button type="button" class="delete" data-toggle="modal" data-target="#modalDelete{{ i.pieceID }}">&times;</button>
+              <div class="modal fade" id="modalDelete{{ i.pieceID }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -309,7 +297,6 @@
               </div>
             </form>
             <div class="pwriter">genre: {{ i.genre }}</div>
-            <!-- <a href="#" class="badge badge-danger">Delete</a> -->
           </div>
         {% endif %}
       {% endfor %}
@@ -349,10 +336,10 @@
               {% if i.pieceID == j.pieceID %}
               <div class="configlinks">
                 <!-- UPDATE -->
-                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalUpdateR">Update</button>
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteR">Delete</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalUpdateR{{ i.pieceID }}">Update</button>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDeleteR{{ i.pieceID }}">Delete</button>
                 <form action="/update_review" method="POST">
-                  <div class="modal fade" id="modalUpdateR" tabindex="-1" role="dialog" aria-labelledby="urCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="modalUpdateR{{ i.pieceID }}" tabindex="-1" role="dialog" aria-labelledby="urCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -378,7 +365,7 @@
                 </form>
                 <!-- DELETE -->
                 <form action="/delete_review" method="POST">
-                  <div class="modal fade" id="modalDeleteR" tabindex="-1" role="dialog" aria-labelledby="drCenterTitle" aria-hidden="true">
+                  <div class="modal fade" id="modalDeleteR{{ i.pieceID }}" tabindex="-1" role="dialog" aria-labelledby="drCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">

@@ -39,7 +39,6 @@ class Writer(db.Model):
 		return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class List(db.Model):
-	listID = db.Column(db.Integer,unique=True,nullable=False,primary_key=True,autoincrement=True)
 	writerID = db.Column(db.Integer, db.ForeignKey('writer.writerID'),primary_key=True)
 	pieceID = db.Column(db.Integer, db.ForeignKey('piece.pieceID'),primary_key=True)
 
@@ -105,7 +104,11 @@ def deletePiece():
 	db.session.commit()
 
 	pieces = db.session.query(Piece).all()
-	return render_template('profile.html', user=user, pieces=pieces)
+	reviews = db.session.query(Reviews).all()
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
 
 ############################add reviews###############################################
 #so since kailangan ng pieceID kailangan nung update piece may hidden ulit siya sa form
@@ -131,7 +134,11 @@ def addReview():
 	db.session.commit()
 	pieces = db.session.query(Piece).all()
 	reviews = db.session.query(Reviews).all()
-	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
+
 ##########################################################################33
 # @app.route('/delete-review_form', methods=['GET', 'POST'])
 # def deleteReviewForm():
@@ -154,7 +161,11 @@ def deleteReview():
 
 	pieces = db.session.query(Piece).all()
 	reviews = db.session.query(Reviews).all()
-	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
+
 
 @app.route('/update-review_form', methods=['GET', 'POST'])
 def updateReviewForm():
@@ -178,7 +189,11 @@ def updateReview():
 	
 	pieces = db.session.query(Piece).all()
 	reviews = db.session.query(Reviews).all()
-	return render_template('profile.html', user=user, pieces=pieces, reviews=reviews)
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
+
 ############################add rating##############################
 @app.route('/add-rating_form', methods=['GET', 'POST'])
 def addRatingForm():
@@ -201,8 +216,11 @@ def addRating():
 	db.session.add(rating)
 	db.session.commit()
 	pieces = db.session.query(Piece).all()
+	reviews = db.session.query(Reviews).all()
 	ratings = db.session.query(Rating).all()
-	return render_template('profile.html', user=user, pieces=pieces, ratings=rating)
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
 
 ########################addtoList##############
 @app.route('/add-to-list_form', methods=['GET', 'POST'])
@@ -218,10 +236,12 @@ def addToListForm():
 def addToList():
 	result = db.session.query(Writer).filter_by(name=session['username']).first()
 	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
-	pieceID = request.form.get('pieceID')
+	pieceID = request.form.get('favePID')
 	select = db.session.query(Piece).filter_by(pieceID=pieceID).first()
 
-	piece = List(listID=result.writerID, writerID=result.writerID, pieceID=select.pieceID)
+	piece = List(writerID=result.writerID, pieceID=select.pieceID)
+	db.session.add(piece)
+	db.session.commit()
 
 	pieces = db.session.query(Piece).all()
 	all_list = db.session.query(List).all()
@@ -245,7 +265,11 @@ def updatePiece():
 	db.session.commit()
 
 	pieces = db.session.query(Piece).all()
-	return render_template('profile.html', user=user, pieces=pieces)
+	reviews = db.session.query(Reviews).all()
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
 
 @app.route('/add_piece', methods=['POST'])
 def addPiece():
@@ -261,8 +285,12 @@ def addPiece():
 	db.session.add(piece)
 	db.session.commit()
 	pieces = db.session.query(Piece).all()
-	return render_template('profile.html', user=user, pieces=pieces)
-	# return render_template('add_piece.html', user=user)
+	reviews = db.session.query(Reviews).all()
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
+# return render_template('add_piece.html', user=user)
 
 @app.route('/dito_muna', methods=['GET', 'POST'])
 def ditomuna():
@@ -285,7 +313,11 @@ def updateUser():
 	db.session.commit()
 	user = {'username': result.name, 'password' : result.password, 'about' : result.about, 'writerID': result.writerID}
 	pieces = db.session.query(Piece).all()
-	return render_template('profile.html', user=user, pieces=pieces)
+	reviews = db.session.query(Reviews).all()
+	ratings = db.session.query(Rating).all()
+	all_list = db.session.query(List).all()
+	writers = db.session.query(Writer).all()
+	return render_template('profile.html', user=user, pieces=pieces, ratings=ratings, reviews=reviews,all_list=all_list,writers=writers)
 
 @app.route('/view_profile')
 def viewProfile():
@@ -297,13 +329,15 @@ def viewProfile():
 	reviews = db.session.query(Reviews).all()
 	return render_template('profile.html', user=user, pieces=pieces, all_list=all_list, writers=writers, reviews=reviews)
 
-@app.route('/view_all_pieces', methods=['POST'])
+@app.route('/view_all_pieces')
 def viewAllPieces():
+	result = db.session.query(Writer).filter_by(name=session['username']).first()
+	user = {'username': result.name, 'about' : result.about, 'writerID': result.writerID}
 	writers = db.session.query(Writer).all()
 	pieces = db.session.query(Piece).all()
 	reviews = db.session.query(Reviews).all()
 	ratings = db.session.query(Rating).all()
-	return render_template('try.html', pieces=pieces, reviews=reviews, ratings=ratings, writers=writers)
+	return render_template('library.html', user=user, pieces=pieces, reviews=reviews, ratings=ratings, writers=writers)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -345,7 +379,7 @@ def signup():
 			writer = Writer(name=request.form['username'], about=request.form['about'], password=request.form['password'])
 			db.session.add(writer)
 			db.session.commit()
-			writer_list = List(writerID=writer.writerID)
+			writer_list = List(writerID=writer.writerID, pieceID=1)
 			db.session.add(writer_list)
 			db.session.commit()
 			session['logged_in'] = True
